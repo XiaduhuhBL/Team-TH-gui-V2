@@ -1,280 +1,312 @@
--- T00kshaf1y's F3X GUI v2 - FIXED VERSION
+-- T00kshaf1y's F3X GUI v2 - FINAL CORRECT VERSION
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
+
+-- 删除旧GUI
+if PlayerGui:FindFirstChild("T00kshaf1yGUI") then
+    PlayerGui.T00kshaf1yGUI:Destroy()
+end
 
 -- 创建GUI
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "T00kshaf1yGUI"
 ScreenGui.Parent = PlayerGui
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.ResetOnSpawn = false
 
--- 主框架
 local MainFrame = Instance.new("Frame")
-MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
 MainFrame.BorderColor3 = Color3.fromRGB(0, 255, 255)
 MainFrame.BorderSizePixel = 2
 MainFrame.Position = UDim2.new(0.3, 0, 0.1, 0)
 MainFrame.Size = UDim2.new(0, 500, 0, 600)
-MainFrame.Active = true  -- 添加这个
-MainFrame.Selectable = true  -- 添加这个
 
--- 背景贴图
-local BackgroundDecal = Instance.new("Decal")
-BackgroundDecal.Parent = MainFrame
-BackgroundDecal.Texture = "rbxassetid://123452321164348"
-BackgroundDecal.Face = Enum.NormalId.Top
+-- 拖动功能
+local UIS = game:GetService("UserInputService")
+local dragToggle = nil
+local dragSpeed = 0.25
+local dragStart = nil
+local startPos = nil
 
--- 标题栏（用于拖动）
-local TitleBar = Instance.new("Frame")
-TitleBar.Name = "TitleBar"
-TitleBar.Parent = MainFrame
-TitleBar.BackgroundColor3 = Color3.fromRGB(0, 0, 100)
-TitleBar.BorderSizePixel = 0
-TitleBar.Size = UDim2.new(1, 0, 0, 30)
-TitleBar.Active = true
-TitleBar.Selectable = true
+local function updateInput(input)
+	local delta = input.Position - dragStart
+	local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
+		startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	game:GetService("TweenService"):Create(MainFrame, TweenInfo.new(dragSpeed), {Position = position}):Play()
+end
 
--- 标题文本
-local TitleLabel = Instance.new("TextLabel")
-TitleLabel.Name = "TitleLabel"
-TitleLabel.Parent = TitleBar
-TitleLabel.BackgroundTransparency = 1
-TitleLabel.Size = UDim2.new(1, 0, 1, 0)
-TitleLabel.Font = Enum.Font.SourceSansBold
-TitleLabel.Text = "T00kshaf1y's F3X GUI v2 - Drag Here"
-TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLabel.TextSize = 16
-TitleLabel.TextStrokeTransparency = 0
+MainFrame.InputBegan:Connect(function(input)
+	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
+		dragToggle = true
+		dragStart = input.Position
+		startPos = MainFrame.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragToggle = false
+			end
+		end)
+	end
+end)
+
+MainFrame.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		if dragToggle then
+			updateInput(input)
+		end
+	end
+end)
 
 -- 滚动框架
 local ScrollingFrame = Instance.new("ScrollingFrame")
 ScrollingFrame.Parent = MainFrame
-ScrollingFrame.Active = true
-ScrollingFrame.BackgroundTransparency = 1
-ScrollingFrame.Position = UDim2.new(0, 0, 0, 35)  -- 在标题栏下面
-ScrollingFrame.Size = UDim2.new(1, 0, 1, -35)    -- 减去标题栏高度
-ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 2500)  -- 足够大的滚动区域
-ScrollingFrame.ScrollBarThickness = 12
-ScrollingFrame.ScrollingDirection = Enum.ScrollingDirection.Y
-ScrollingFrame.VerticalScrollBarInset = Enum.ScrollBarInset.Always
-ScrollingFrame.BottomImage = "rbxasset://textures/ui/Scroll/scroll-bottom.png"
-ScrollingFrame.MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
-ScrollingFrame.TopImage = "rbxasset://textures/ui/Scroll/scroll-top.png"
+ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
+ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 3000)
+ScrollingFrame.ScrollBarThickness = 10
 
--- UI列表布局
 local UIListLayout = Instance.new("UIListLayout")
 UIListLayout.Parent = ScrollingFrame
-UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout.Padding = UDim.new(0, 8)  -- 增加间距
+UIListLayout.Padding = UDim.new(0, 5)
 
--- 按钮创建函数
-local function CreateButton(name, text, layoutOrder, textSize, isBig)
-    local button = Instance.new("TextButton")
-    button.Name = name
-    button.Parent = ScrollingFrame
-    button.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    button.BorderColor3 = Color3.fromRGB(255, 0, 0)
-    button.BorderSizePixel = 2
-    button.LayoutOrder = layoutOrder
-    button.Size = UDim2.new(0, 460, 0, isBig and 50 or 35)  -- 大按钮更高
-    button.Font = Enum.Font.SourceSans
-    button.Text = text
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.TextSize = textSize or (isBig and 18 or 14)
-    button.AutoButtonColor = true
-    return button
+-- 标题
+local Title = Instance.new("TextLabel")
+Title.Parent = ScrollingFrame
+Title.Size = UDim2.new(0, 480, 0, 50)
+Title.BackgroundTransparency = 1
+Title.Text = "T00kshaf1y's F3X GUI v2"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 30
+Title.LayoutOrder = 1
+
+-- 按钮创建
+local function CreateButton(text, layoutOrder)
+	local button = Instance.new("TextButton")
+	button.Parent = ScrollingFrame
+	button.Size = UDim2.new(0, 480, 0, 40)
+	button.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+	button.BorderColor3 = Color3.fromRGB(255, 0, 0)
+	button.Text = text
+	button.TextColor3 = Color3.fromRGB(255, 255, 255)
+	button.TextSize = 16
+	button.LayoutOrder = layoutOrder
+	return button
 end
 
--- 所有按钮定义
+-- 创建所有按钮
 local buttons = {
     -- 工具
-    {name = "GetBtools", text = "Get Btools", order = 1},
+    {text = "Get Btools", order = 2},
     
     -- 天空盒
-    {name = "Skybox1", text = "Skybox 1", order = 2},
-    {name = "Skybox2", text = "Skybox 2", order = 3},
-    {name = "IslamSkybox", text = "Islam Skybox", order = 4},
+    {text = "Skybox 1", order = 3},
+    {text = "Skybox 2", order = 4},
+    {text = "Islam Skybox", order = 5},
     
-    -- 贴图垃圾邮件
-    {name = "DecalSpam1", text = "Decal Spam 1", order = 5},
-    {name = "DecalSpam2", text = "Decal Spam 2", order = 6},
-    {name = "IslamDecalSpam", text = "Islam Decal Spam", order = 7},
+    -- 贴图
+    {text = "Decal Spam 1", order = 6},
+    {text = "Decal Spam 2", order = 7},
+    {text = "Islam Decal Spam", order = 8},
     
     -- 消息系统
-    {name = "Message1", text = "Send Message 1", order = 8},
-    {name = "Message2", text = "Send Message 2", order = 9},
-    {name = "Hint1", text = "Hint Message 1", order = 10},
-    {name = "Hint2", text = "Hint Message 2", order = 11},
+    {text = "Send Message 1", order = 9},
+    {text = "Send Message 2", order = 10},
     
-    -- 警报系统
-    {name = "Alert1", text = "Alert Message 1", order = 12},
-    {name = "Alert2", text = "Alert Message 2", order = 13},
+    -- 4个Hint按钮
+    {text = "Hint Message 1", order = 11},
+    {text = "Hint Message 2", order = 12},
+    {text = "Hint Message 3", order = 13},
+    {text = "Hint Message 4", order = 14},
+    
+    -- 警报
+    {text = "Alert Message 1", order = 15},
+    {text = "Alert Message 2", order = 16},
     
     -- 特效
-    {name = "FireAll", text = "Fire All Parts", order = 14},
-    {name = "Disco", text = "Disco Lights", order = 15},
-    {name = "Fog", text = "Fog Effect", order = 16},
+    {text = "Fire All Parts", order = 17},
+    {text = "Disco Lights", order = 18},
+    {text = "Fog Effect", order = 19},
     
     -- 玩家控制
-    {name = "TitleMe", text = "Title Me", order = 17},
-    {name = "TitleOthers", text = "Title Others", order = 18},
-    {name = "InvisibleAll", text = "Invisible All", order = 19},
-    {name = "FreezeAll", text = "Freeze All", order = 20},
-    {name = "JailAll", text = "Jail All", order = 21},
-    {name = "KillAll", text = "Kill All", order = 22},
-    {name = "IceAll", text = "Ice All", order = 23},
+    {text = "Title Me", order = 20},
+    {text = "Title Others", order = 21},
+    {text = "Invisible All", order = 22},
+    {text = "Freeze All", order = 23},
+    {text = "Jail All", order = 24},
+    {text = "Kill All", order = 25},
+    {text = "Ice All", order = 26},
     
     -- 地图控制
-    {name = "UnanchorAll", text = "Unanchor All", order = 24},
-    {name = "DestroyAll", text = "Destroy All", order = 25},
-    {name = "RandomColorSpam", text = "Random Color Spam", order = 26},
-    {name = "Baseplate", text = "Create Baseplate", order = 27},
+    {text = "Unanchor All", order = 27},
+    {text = "Destroy All", order = 28},
+    {text = "Random Color Spam", order = 29},
+    {text = "Create Baseplate", order = 30},
     
     -- 时间
-    {name = "Night", text = "Set Night", order = 28},
-    {name = "Day", text = "Set Day", order = 29},
+    {text = "Set Night", order = 31},
+    {text = "Set Day", order = 32},
     
     -- 传送
-    {name = "BringAll", text = "Bring All Players", order = 30},
-    {name = "TPAllMeepCity", text = "TP All to Meep City", order = 31},
+    {text = "Bring All Players", order = 33},
+    {text = "TP All to Meep City", order = 34},
     
     -- 反作弊
-    {name = "AntiSkid", text = "Anti Skid", order = 32},
+    {text = "Anti Skid", order = 35},
     
     -- 车辆
-    {name = "CarAll", text = "Car All Players", order = 33},
-    {name = "TankAll", text = "Tank All Players", order = 34},
-    {name = "FlingAll", text = "Fling All Players", order = 35},
+    {text = "Car All Players", order = 36},
+    {text = "Tank All Players", order = 37},
+    {text = "Fling All Players", order = 38},
     
-    -- 踢人惩罚
-    {name = "KickAll", text = "Kick All Players", order = 36},
-    {name = "PunishAll", text = "Punish All Players", order = 37},
+    -- 踢人
+    {text = "Kick All Players", order = 39},
+    {text = "Punish All Players", order = 40},
     
     -- 团队
-    {name = "TeamSpam", text = "Create Team Spam", order = 38},
-    {name = "TeamNameAll", text = "Team Name All", order = 39},
+    {text = "Create Team Spam", order = 41},
+    {text = "Team Name All", order = 42},
     
-    -- 角色变身
-    {name = "BecomeT00kshaf1y", text = "Become T00kshaf1y", order = 40},
-    {name = "BecomeC00lkidd", text = "Become c00lkidd", order = 41},
-    {name = "BecomeTubers93", text = "Become Tubers93", order = 42},
+    -- 角色
+    {text = "Become T00kshaf1y", order = 43},
+    {text = "Become c00lkidd", order = 44},
+    {text = "Become Tubers93", order = 45},
     
-    -- 保存地图
-    {name = "SaveMap", text = "Save Map", order = 43},
+    -- 保存
+    {text = "Save Map", order = 46},
     
-    -- REALM (大按钮)
-    {name = "Realm", text = "🎪 CREATE REALM 🎪", order = 44, big = true},
+    -- Realm
+    {text = "CREATE REALM", order = 47},
 }
 
--- 创建功能按钮
 local ButtonInstances = {}
-for _, btnInfo in ipairs(buttons) do
-    ButtonInstances[btnInfo.name] = CreateButton(btnInfo.name, btnInfo.text, btnInfo.order, nil, btnInfo.big)
+for i, btn in ipairs(buttons) do
+    ButtonInstances[i] = CreateButton(btn.text, btn.order)
 end
 
--- 音乐区标签
-local MusicLabel = Instance.new("TextLabel")
-MusicLabel.Parent = ScrollingFrame
-MusicLabel.BackgroundTransparency = 1
-MusicLabel.Size = UDim2.new(0, 460, 0, 40)
-MusicLabel.Font = Enum.Font.SourceSansBold
-MusicLabel.Text = "🎵 MUSIC SECTION 🎵"
-MusicLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-MusicLabel.TextSize = 22
-MusicLabel.TextStrokeTransparency = 0
-MusicLabel.LayoutOrder = 50
+-- 音乐区
+local MusicTitle = Instance.new("TextLabel")
+MusicTitle.Parent = ScrollingFrame
+MusicTitle.Size = UDim2.new(0, 480, 0, 40)
+MusicTitle.BackgroundTransparency = 1
+MusicTitle.Text = "🎵 MUSIC SECTION 🎵"
+MusicTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+MusicTitle.TextSize = 20
+MusicTitle.LayoutOrder = 50
 
 -- 音乐按钮
 local musicButtons = {
-    {name = "Music1", text = "IDK Music", order = 51},
-    {name = "Music2", text = "Ba Fang Lai Cai", order = 52},
-    {name = "Music3", text = "Team's Theme", order = 53},
-    {name = "Music4", text = "c00lkidd Theme", order = 54},
-    {name = "Music5", text = "Jumpstyle", order = 55},
-    {name = "Music6", text = "Funk", order = 56},
-    {name = "Music7", text = "Wind of the Flords", order = 57},
-    {name = "Music8", text = "Whistle", order = 58},
-    {name = "Music9", text = "IDK 2", order = 59},
-    {name = "MusicSparta", text = "🔥 Sparta Remix 🔥", order = 60, big = true},
+    {text = "IDK Music", order = 51},
+    {text = "Ba Fang Lai Cai", order = 52},
+    {text = "Team's Theme", order = 53},
+    {text = "c00lkidd Theme", order = 54},
+    {text = "Jumpstyle", order = 55},
+    {text = "Funk", order = 56},
+    {text = "Wind of the Flords", order = 57},
+    {text = "Whistle", order = 58},
+    {text = "IDK 2", order = 59},
+    {text = "Sparta Remix", order = 60},
 }
 
-for _, musicInfo in ipairs(musicButtons) do
-    ButtonInstances[musicInfo.name] = CreateButton(musicInfo.name, musicInfo.text, musicInfo.order, nil, musicInfo.big)
+for i, music in ipairs(musicButtons) do
+    ButtonInstances[50 + i] = CreateButton(music.text, music.order)
 end
-
--- 修复拖动功能
-local function MakeDraggable(gui, dragBar)
-    local dragging = false
-    local dragInput, dragStart, startPos
-    
-    local function update(input)
-        local delta = input.Position - dragStart
-        gui.Position = UDim2.new(
-            startPos.X.Scale, 
-            startPos.X.Offset + delta.X,
-            startPos.Y.Scale, 
-            startPos.Y.Offset + delta.Y
-        )
-    end
-    
-    dragBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-            dragStart = input.Position
-            startPos = gui.Position
-            
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
-    
-    dragBar.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
-            dragInput = input
-        end
-    end)
-    
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            update(input)
-        end
-    end)
-end
-
--- 应用拖动功能到标题栏
-MakeDraggable(MainFrame, TitleBar)
 
 -- HD Admin功能
 local function HDAdminCommand(command)
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
     local HDAdminClient = ReplicatedStorage:FindFirstChild("HDAdminHDClient")
     if HDAdminClient then
-        local Signals = HDAdminClient:WaitForChild("Signals")
-        local RequestCommand = Signals:WaitForChild("RequestCommandSilent")
+        local RequestCommand = HDAdminClient.Signals.RequestCommandSilent
         RequestCommand:InvokeServer(command)
-        print("Executed: " .. command)
-    else
-        warn("HD Admin not found! Make sure it's installed on the server.")
     end
 end
 
--- 连接所有按钮功能
--- [这里省略按钮连接代码，与之前相同，确保所有按钮都正确连接]
+-- 连接按钮功能
+ButtonInstances[2].MouseButton1Click:Connect(function() HDAdminCommand(";btools me") end) -- Get Btools
 
--- 测试按钮连接
-ButtonInstances["GetBtools"].MouseButton1Click:Connect(function()
-    HDAdminCommand(";btools me")
+-- 4个Hint按钮
+ButtonInstances[11].MouseButton1Click:Connect(function() HDAdminCommand(";h Join our team now!") end) -- Hint 1
+ButtonInstances[12].MouseButton1Click:Connect(function() HDAdminCommand(";h T00kshaf1y is here!") end) -- Hint 2
+ButtonInstances[13].MouseButton1Click:Connect(function() HDAdminCommand(";h Hacked by us!") end) -- Hint 3
+ButtonInstances[14].MouseButton1Click:Connect(function() HDAdminCommand(";h Team t00kshaf1y on top!") end) -- Hint 4
+
+-- 消息按钮
+ButtonInstances[9].MouseButton1Click:Connect(function() HDAdminCommand(";sm Team t00kshaf1y join today!!") end)
+ButtonInstances[10].MouseButton1Click:Connect(function() HDAdminCommand(";sm T00kshaf1y has hacked this server!") end)
+
+-- 警报按钮
+ButtonInstances[15].MouseButton1Click:Connect(function() HDAdminCommand(";alert all HACKED BY T00KSHAF1Y") end)
+ButtonInstances[16].MouseButton1Click:Connect(function() HDAdminCommand(";alert all Welcome to Team t00kshaf1y!") end)
+
+-- 玩家控制
+ButtonInstances[20].MouseButton1Click:Connect(function() HDAdminCommand(";titleb me T00kshaf1y") end)
+ButtonInstances[21].MouseButton1Click:Connect(function() HDAdminCommand(";title all Team t00kshaf1y") end)
+ButtonInstances[22].MouseButton1Click:Connect(function() HDAdminCommand(";invisible all") end)
+ButtonInstances[23].MouseButton1Click:Connect(function() HDAdminCommand(";freeze all") end)
+ButtonInstances[24].MouseButton1Click:Connect(function() HDAdminCommand(";jail all") end)
+ButtonInstances[25].MouseButton1Click:Connect(function() HDAdminCommand(";kill all") end)
+ButtonInstances[26].MouseButton1Click:Connect(function() HDAdminCommand(";ice all") end)
+
+-- 特效
+ButtonInstances[17].MouseButton1Click:Connect(function() HDAdminCommand(";fire all") end)
+ButtonInstances[18].MouseButton1Click:Connect(function() HDAdminCommand(";disco") end)
+ButtonInstances[19].MouseButton1Click:Connect(function() HDAdminCommand(";fog") end)
+
+-- 地图控制
+ButtonInstances[27].MouseButton1Click:Connect(function() HDAdminCommand(";unanchor all") end)
+ButtonInstances[28].MouseButton1Click:Connect(function() HDAdminCommand(";destroy all") end)
+ButtonInstances[29].MouseButton1Click:Connect(function() HDAdminCommand(";randomcolor all") end)
+
+-- 时间
+ButtonInstances[31].MouseButton1Click:Connect(function() HDAdminCommand(";time 23") end)
+ButtonInstances[32].MouseButton1Click:Connect(function() HDAdminCommand(";time 14") end)
+
+-- 传送
+ButtonInstances[33].MouseButton1Click:Connect(function() HDAdminCommand(";bring all") end)
+ButtonInstances[34].MouseButton1Click:Connect(function() HDAdminCommand(";forceplace all 109147333821356") end)
+
+-- 反作弊
+ButtonInstances[35].MouseButton1Click:Connect(function() 
+    HDAdminCommand(";hideguis others")
+    HDAdminCommand(";uncmdbar2 others") 
+    HDAdminCommand(";mute others")
 end)
 
-ButtonInstances["Realm"].MouseButton1Click:Connect(function()
+-- 车辆
+ButtonInstances[36].MouseButton1Click:Connect(function() HDAdminCommand(";car all") end)
+ButtonInstances[37].MouseButton1Click:Connect(function() HDAdminCommand(";tank all") end)
+ButtonInstances[38].MouseButton1Click:Connect(function() HDAdminCommand(";fling all") end)
+
+-- 踢人
+ButtonInstances[39].MouseButton1Click:Connect(function() HDAdminCommand(";kick all") end)
+ButtonInstances[40].MouseButton1Click:Connect(function() HDAdminCommand(";punish all") end)
+
+-- 团队
+ButtonInstances[41].MouseButton1Click:Connect(function() 
+    HDAdminCommand(";createteam red T00kshaf1y")
+    HDAdminCommand(";createteam blue T00kshaf1y")
+    HDAdminCommand(";createteam green T00kshaf1y")
+end)
+ButtonInstances[42].MouseButton1Click:Connect(function() HDAdminCommand(";name all T00kshaf1y") end)
+
+-- 角色
+ButtonInstances[43].MouseButton1Click:Connect(function() 
+    HDAdminCommand(";char me ttsghdvhfc2")
+    HDAdminCommand(";name me t00kshaf1y")
+end)
+ButtonInstances[44].MouseButton1Click:Connect(function() 
+    HDAdminCommand(";char me c00lkiddsb4k")
+    HDAdminCommand(";name me c00lkidd")
+end)
+ButtonInstances[45].MouseButton1Click:Connect(function() 
+    HDAdminCommand(";char me Tubers93qm")
+    HDAdminCommand(";name me Tubers93")
+end)
+
+-- 保存
+ButtonInstances[46].MouseButton1Click:Connect(function() HDAdminCommand(";savemap") end)
+
+-- Realm
+ButtonInstances[47].MouseButton1Click:Connect(function()
     HDAdminCommand(";btools me")
     HDAdminCommand(";sm Team t00kshaf1y join now!!")
     wait(0.5)
@@ -298,26 +330,14 @@ ButtonInstances["Realm"].MouseButton1Click:Connect(function()
     HDAdminCommand(";loopkill all")
 end)
 
-ButtonInstances["MusicSparta"].MouseButton1Click:Connect(function()
-    HDAdminCommand(";music 73293994328169 ;volume inf ;pitch 0.1")
-end)
-
--- 更新CanvasSize以确保可以滚动到底部
-local function UpdateCanvasSize()
-    local totalHeight = 0
-    for _, child in ipairs(ScrollingFrame:GetChildren()) do
-        if child:IsA("GuiObject") then
-            totalHeight = totalHeight + child.Size.Y.Offset + UIListLayout.Padding.Offset
-        end
-    end
-    ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, totalHeight + 50)
-end
-
--- 等待一帧后更新CanvasSize
-wait(0.1)
-UpdateCanvasSize()
-
-print("✅ T00kshaf1y's F3X GUI v2 loaded successfully!")
-print("✅ Drag the title bar to move the GUI")
-print("✅ Scroll to see all buttons")
-print("✅ All functions are ready to use!")
+-- 音乐
+ButtonInstances[51].MouseButton1Click:Connect(function() HDAdminCommand(";music 109312105079673 ;volume inf") end)
+ButtonInstances[52].MouseButton1Click:Connect(function() HDAdminCommand(";music 113158802785741 ;pitch 0.1 ;volume inf") end)
+ButtonInstances[53].MouseButton1Click:Connect(function() HDAdminCommand(";music 1847661821 ;pitch 0.9 ;volume inf") end)
+ButtonInstances[54].MouseButton1Click:Connect(function() HDAdminCommand(";music 122552583844805 ;pitch 0.10 ;volume inf") end)
+ButtonInstances[55].MouseButton1Click:Connect(function() HDAdminCommand(";music 1839246711 ;pitch 1.1 ;volume inf") end)
+ButtonInstances[56].MouseButton1Click:Connect(function() HDAdminCommand(";music 16190783774 ;pitch 1.2 ;volume inf") end)
+ButtonInstances[57].MouseButton1Click:Connect(function() HDAdminCommand(";music 93932484780481 ;pitch 0.09 ;volume inf") end)
+ButtonInstances[58].MouseButton1Click:Connect(function() HDAdminCommand(";music 3152833592 ;volume inf") end)
+ButtonInstances[59].MouseButton1Click:Connect(function() HDAdminCommand(";music 3892375615 ;pitch 1.0 ;volume inf") end)
+ButtonInstances[60].MouseButton1Click:Connect(function() HDAdminCommand(";music 73293994328169 ;volume inf ;pitch 0.1") end)
