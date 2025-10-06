@@ -1,0 +1,1694 @@
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local ScrollingFrame = Instance.new("ScrollingFrame")
+local UIListLayout = Instance.new("UIListLayout")
+local TextLabel = Instance.new("TextLabel")
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.ResetOnSpawn = false
+
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+MainFrame.BorderColor3 = Color3.fromRGB(0, 255, 255)
+MainFrame.BorderSizePixel = 2
+MainFrame.Position = UDim2.new(0.3, 0, 0.1, 0)
+MainFrame.Size = UDim2.new(0, 500, 0, 600)
+
+TextLabel.Parent = MainFrame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.Size = UDim2.new(1, 0, 0, 50)
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.Text = "t00kshaf1y's Combined GUI V2.0"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 30.000
+
+ScrollingFrame.Parent = MainFrame
+ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ScrollingFrame.BackgroundTransparency = 1.000
+ScrollingFrame.BorderSizePixel = 0
+ScrollingFrame.Position = UDim2.new(0, 0, 0.083, 0)
+ScrollingFrame.Size = UDim2.new(1, 0, 0.917, 0)
+ScrollingFrame.CanvasSize = UDim2.new(0, 0, 3, 0)
+ScrollingFrame.ScrollBarThickness = 10
+
+UIListLayout.Parent = ScrollingFrame
+UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 5)
+
+local function createButton(text, layoutOrder)
+	local button = Instance.new("TextButton")
+	button.Parent = ScrollingFrame
+	button.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+	button.BorderColor3 = Color3.fromRGB(255, 0, 0)
+	button.BorderSizePixel = 2
+	button.LayoutOrder = layoutOrder
+	button.Size = UDim2.new(0.9, 0, 0, 40)
+	button.Font = Enum.Font.SourceSans
+	button.Text = text
+	button.TextColor3 = Color3.fromRGB(255, 255, 255)
+	button.TextSize = 18.000
+	return button
+end
+
+local function createCategory(text, layoutOrder)
+	local label = Instance.new("TextLabel")
+	label.Parent = ScrollingFrame
+	label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	label.BackgroundTransparency = 1.000
+	label.Size = UDim2.new(0.9, 0, 0, 30)
+	label.Font = Enum.Font.SourceSansBold
+	label.Text = text
+	label.TextColor3 = Color3.fromRGB(255, 255, 255)
+	label.TextSize = 22.000
+	label.LayoutOrder = layoutOrder
+	return label
+end
+
+local layoutOrder = 0
+
+createCategory("HD Admin 功能", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local btoolsBtn = createButton("获取BTools", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local sendMsgBtn = createButton("发送消息", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local forceChatBtn = createButton("强制聊天", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local titleMeBtn = createButton("给我标题", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local nightBtn = createButton("夜晚", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local dayBtn = createButton("白天", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local saveMapBtn = createButton("保存地图", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local bringAllBtn = createButton("带来所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local crashAllBtn = createButton("崩溃所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local antiSkidBtn = createButton("反检测", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 玩家控制功能分类
+createCategory("玩家控制", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local iceAllBtn = createButton("冰冻所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local freezeAllBtn = createButton("冻结所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local jailAllBtn = createButton("监禁所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local invisibleAllBtn = createButton("隐身所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local dogAllBtn = createButton("狗所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local tankAllBtn = createButton("坦克所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local killAllBtn = createButton("杀死所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local carAllBtn = createButton("车所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local flingAllBtn = createButton("抛掷所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local unflyAllBtn = createButton("取消飞行所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local muteAllBtn = createButton("静音所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local blurAllBtn = createButton("模糊所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local titleOthersBtn = createButton("给其他人标题", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local kickAllBtn = createButton("踢出所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local punishAllBtn = createButton("惩罚所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 世界编辑功能分类
+createCategory("世界编辑", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local unanchorAllBtn = createButton("取消锚定所有", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local deleteBaseplateBtn = createButton("删除基板", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local baseplateBtn = createButton("创建基板", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local rdColorSpamBtn = createButton("随机颜色垃圾", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local destroyAllBtn = createButton("销毁所有", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local fireAllBtn = createButton("火焰所有", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local fogBtn = createButton("雾", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local discoBtn = createButton("迪斯科", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 天空盒功能分类
+createCategory("天空盒", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local skybox1Btn = createButton("天空盒 1", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local skybox2Btn = createButton("天空盒 2", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local islamSkyboxBtn = createButton("伊斯兰天空盒", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local protoSkyboxBtn = createButton("原型天空盒", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local ptkidSkyboxBtn = createButton("PTKID 天空盒", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local skybox3Btn = createButton("天空盒 3", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 贴花垃圾功能分类
+createCategory("贴花垃圾", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local decalSpam1Btn = createButton("贴花垃圾 1", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local decalSpam2Btn = createButton("贴花垃圾 2", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local islamDecalSpamBtn = createButton("伊斯兰贴花垃圾", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local protoDecalSpamBtn = createButton("原型贴花垃圾", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local ptkidDecalSpamBtn = createButton("PTKID 贴花垃圾", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local decalSpam3Btn = createButton("贴花垃圾 3", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 纹理垃圾功能分类
+createCategory("纹理垃圾", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local protoTextureSpamBtn = createButton("原型纹理垃圾", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local ptkidTextureSpamBtn = createButton("PTKID 纹理垃圾", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local colorSpam2Btn = createButton("颜色垃圾 2", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 音乐功能分类
+createCategory("音乐", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local music1Btn = createButton("音乐 1", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local music2Btn = createButton("音乐 2", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local teamThemeBtn = createButton("团队主题", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local c00lkiddBtn = createButton("c00lkidd", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local jumpstyleBtn = createButton("Jumpstyle", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local funkBtn = createButton("Funk", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local windBtn = createButton("风之笛", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local whistleBtn = createButton("口哨", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local music3Btn = createButton("音乐 3", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local spartaRemixBtn = createButton("Sparta Remix", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 团队功能分类
+createCategory("团队功能", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local teamNameAllBtn = createButton("团队名称所有人", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local teamSpamBtn = createButton("团队垃圾", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local alertBtn = createButton("警报", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 传送功能分类
+createCategory("传送", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local tpAllMeepBtn = createButton("传送所有人到Meep City", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local tpOtherMeepBtn = createButton("传送其他人到Meep City", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 角色功能分类
+createCategory("角色", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local becomeT00kshaf1yBtn = createButton("成为 t00kshaf1y", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local becomeTubers93Btn = createButton("成为 Tubers93", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local becomeC00lkiddBtn = createButton("成为 c00lkidd", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 提示功能分类
+createCategory("提示", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local hint1Btn = createButton("提示 1", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local hint2Btn = createButton("提示 2", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local hintAll1Btn = createButton("提示所有人 1", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local hintAll2Btn = createButton("提示所有人 2", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 消息功能分类
+createCategory("消息", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local message1Btn = createButton("消息 1", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local message2Btn = createButton("消息 2", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 特殊功能分类
+createCategory("特殊功能", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local realmBtn = createButton("领域", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+local destroyMapBtn = createButton("销毁地图", layoutOrder)
+layoutOrder = layoutOrder + 1
+
+-- 按钮功能脚本
+local function getHDAdminCommand()
+	local ReplicatedStorage = game:GetService("ReplicatedStorage")
+	return ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandSilent
+end
+
+-- HD Admin 功能
+btoolsBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";btools me")
+end)
+
+sendMsgBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";sm Team t00kshaf1y join today!!")
+end)
+
+forceChatBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";chat others T00kshaf1y is here")
+	wait(0.2)
+	RequestCommand:InvokeServer(";chat others all hail t00kshaf1y")
+	wait(0.2)
+	RequestCommand:InvokeServer(";chat others t00kshaf1y is god")
+end)
+
+titleMeBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";titleb me T00kshaf1y")
+end)
+
+nightBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";time 23")
+end)
+
+dayBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";time 14")
+end)
+
+saveMapBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";savemap")
+end)
+
+bringAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";bring all")
+end)
+
+crashAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";crash others")
+end)
+
+antiSkidBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";hideguis others")
+	RequestCommand:InvokeServer(";uncmdbar2 others")
+	RequestCommand:InvokeServer(";mute others")
+end)
+
+-- 玩家控制功能
+iceAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";ice all")
+end)
+
+freezeAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";freeze all")
+end)
+
+jailAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";jail all")
+end)
+
+invisibleAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";invisible all")
+end)
+
+dogAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";dog all")
+end)
+
+tankAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";tank all")
+end)
+
+killAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";kill all")
+end)
+
+carAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";car all")
+end)
+
+flingAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";fling all")
+end)
+
+unflyAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";unfly all")
+end)
+
+muteAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";mute all")
+end)
+
+blurAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";blur all")
+end)
+
+titleOthersBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";title all Team t00kshaf1y join today")
+end)
+
+kickAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";kick all")
+end)
+
+punishAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";punish all")
+end)
+
+-- 世界编辑功能
+fogBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";fog")
+end)
+
+discoBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";disco")
+end)
+
+teamNameAllBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";name all T00kshaf1y")
+end)
+
+teamSpamBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";createteam red hacked by t00kshaf1y")
+	RequestCommand:InvokeServer(";createteam cyan team protokidd on top")
+	RequestCommand:InvokeServer(";createteam db Team t00kshaf1y")
+	RequestCommand:InvokeServer(";createteam green t00kshaf1y on top")
+	RequestCommand:InvokeServer(";createteam dg team t00kshaf1y on top")
+	RequestCommand:InvokeServer(";createteam pk t00kshaf1y on top")
+	RequestCommand:InvokeServer(";createteam p t00kshaf1y on top")
+	RequestCommand:InvokeServer(";createteam y t00kshaf1y on top")
+	RequestCommand:InvokeServer(";createteam o t00kshaf1y on top")
+	RequestCommand:InvokeServer(";createteam black t00kshaf1y on top")
+	RequestCommand:InvokeServer(";createteam white t00kshaf1y on top")
+end)
+
+alertBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";alert all HACKED BY T00KSHAF1Y")
+	RequestCommand:InvokeServer(";n all Team t00kshaf1y join today!!")
+end)
+
+tpAllMeepBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";forceplace all 109147333821356")
+end)
+
+tpOtherMeepBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";forceplace other 109147333821356")
+end)
+
+becomeT00kshaf1yBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";char me ttsghdvhfc2")
+	RequestCommand:InvokeServer(";name me t00kshaf1y")
+end)
+
+becomeTubers93Btn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";char me Tubers93qm")
+	RequestCommand:InvokeServer(";name me Tubers93")
+end)
+
+becomeC00lkiddBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";char me c00lkiddsb4k")
+	RequestCommand:InvokeServer(";name me c00lkidd")
+end)
+
+hint1Btn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";h I will destroy this place")
+end)
+
+hint2Btn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";h T00kshaf1y is here")
+end)
+
+hintAll1Btn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";sh Join our team now!")
+end)
+
+hintAll2Btn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";sh Hacked by us")
+end)
+
+-- 消息功能
+message1Btn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";sm T00kshaf1y has already haxed this server")
+end)
+
+message2Btn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";sm Team T00kshaf1y join now!!!")
+end)
+
+-- 音乐功能
+music1Btn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";music 109312105079673 ;volume inf")
+end)
+
+music2Btn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";music 113158802785741 ;pitch 0.1 ;volume inf")
+end)
+
+teamThemeBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";music 1847661821")
+	RequestCommand:InvokeServer(";pitch 0.9")
+	RequestCommand:InvokeServer(";volume inf")
+end)
+
+c00lkiddBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";music 122552583844805")
+	RequestCommand:InvokeServer(";pitch 0.10")
+	RequestCommand:InvokeServer(";volume inf")
+end)
+
+jumpstyleBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";music 1839246711")
+	RequestCommand:InvokeServer(";pitch 1.1")
+	RequestCommand:InvokeServer(";volume inf")
+end)
+
+funkBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";music 16190783774")
+	RequestCommand:InvokeServer(";pitch 1.2")
+	RequestCommand:InvokeServer(";volume inf")
+end)
+
+windBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";music 93932484780481")
+	RequestCommand:InvokeServer(";pitch 0.09")
+	RequestCommand:InvokeServer(";volume inf")
+end)
+
+whistleBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";music 3152833592 ;volume inf")
+end)
+
+music3Btn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";music 3892375615")
+	RequestCommand:InvokeServer(";pitch 1.0")
+	RequestCommand:InvokeServer(";volume inf")
+end)
+
+spartaRemixBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";music 73293994328169 ;volume inf")
+end)
+
+local function getF3XTool()
+	local player = game.Players.LocalPlayer
+	local char = player.Character
+	local tool
+	
+	for i,v in player:GetDescendants() do
+		if v.Name == "SyncAPI" then
+			tool = v.Parent
+		end
+	end
+	for i,v in game.ReplicatedStorage:GetDescendants() do
+		if v.Name == "SyncAPI" then
+			tool = v.Parent
+		end
+	end
+	
+	if tool then
+		remote = tool.SyncAPI.ServerEndpoint
+		return remote
+	end
+	return nil
+end
+
+-- F3X 基础函数
+local function createF3XFunctions()
+	local remote = getF3XTool()
+	if not remote then return nil end
+	
+	local function _(args)
+		return remote:InvokeServer(unpack(args))
+	end
+	
+	local f3x = {}
+	
+	f3x.SetCollision = function(part,boolean)
+		local args = {
+			[1] = "SyncCollision",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["CanCollide"] = boolean
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.SetAnchor = function(boolean,part)
+		local args = {
+			[1] = "SyncAnchor",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Anchored"] = boolean
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.CreatePart = function(cf,parent,partType)
+		local args = {
+			[1] = "CreatePart",
+			[2] = partType or "Normal",
+			[3] = cf,
+			[4] = parent
+		}
+		return _(args)
+	end
+	
+	f3x.DestroyPart = function(part)
+		local args = {
+			[1] = "Remove",
+			[2] = {
+				[1] = part
+			}
+		}
+		_(args)
+	end
+	
+	f3x.MovePart = function(part,cf)
+		local args = {
+			[1] = "SyncMove",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["CFrame"] = cf
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.Resize = function(part,size,cf)
+		local args = {
+			[1] = "SyncResize",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["CFrame"] = cf,
+					["Size"] = size
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.AddMesh = function(part)
+		local args = {
+			[1] = "CreateMeshes",
+			[2] = {
+				[1] = {
+					["Part"] = part
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.SetMesh = function(part,meshid)
+		local args = {
+			[1] = "SyncMesh",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["MeshId"] = "rbxassetid://"..meshid
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.SetTexture = function(part, texid)
+		local args = {
+			[1] = "SyncMesh",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["TextureId"] = "rbxassetid://"..texid
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.SetName = function(part, stringg)
+		local args = {
+			[1] = "SetName",
+			[2] = {
+				[1] = part
+			},
+			[3] = stringg
+		}
+		_(args)
+	end
+	
+	f3x.MeshResize = function(part,size)
+		local args = {
+			[1] = "SyncMesh",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Scale"] = size
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.Weld = function(part1, part2,lead)
+		local args = {
+			[1] = "CreateWelds",
+			[2] = {
+				[1] = part1,
+				[2] = part2
+			},
+			[3] = lead
+		}
+		_(args)
+	end
+	
+	f3x.SetLocked = function(part,boolean)
+		local args = {
+			[1] = "SetLocked",
+			[2] = {
+				[1] = part
+			},
+			[3] = boolean
+		}
+		_(args)
+	end
+	
+	f3x.SetTrans = function(part,int)
+		local args = {
+			[1] = "SyncMaterial",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Transparency"] = int
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.CreateSpotlight = function(part)
+		local args = {
+			[1] = "CreateLights",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["LightType"] = "SpotLight"
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.SyncLighting = function(part,brightness)
+		local args = {
+			[1] = "SyncLighting",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["LightType"] = "SpotLight",
+					["Brightness"] = brightness
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.Color = function(part,color)
+		local args = {
+			[1] = "SyncColor",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Color"] = color,
+					["UnionColoring"] = false
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.SpawnDecal = function(part,side)
+		local args = {
+			[1] = "CreateTextures",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Face"] = side,
+					["TextureType"] = "Decal"
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.AddDecal = function(part,asset,side)
+		local args = {
+			[1] = "SyncTexture",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Face"] = side,
+					["TextureType"] = "Decal",
+					["Texture"] = "rbxassetid://".. asset
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.AddFire = function(part)
+		local args = {
+			[1] = "CreateDecorations",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["DecorationType"] = "Fire"
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.Material = function(part,mate)
+		local args = {
+			[1] = "SyncMaterial",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Material"] = mate
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.toptexturecreate = function(part)
+		local args = {
+			[1] = "CreateTextures",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Face"] = Enum.NormalId.Top,
+					["TextureType"] = "Texture"
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.toptextureadd = function(part)
+		local args = {
+			[1] = "SyncTexture",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Face"] = Enum.NormalId.Top,
+					["TextureType"] = "Texture",
+					["Texture"] = "rbxassetid://0",
+					["StudsPerTileV"] = 10,
+					["StudsPerTileU"] = 10
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.SpawnTexture = function(part,side)
+		local args = {
+			[1] = "CreateTextures",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Face"] = side,
+					["TextureType"] = "Texture"
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.AddTexture = function(part,asset,side)
+		local args = {
+			[1] = "SyncTexture",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Face"] = side,
+					["TextureType"] = "Texture",
+					["Texture"] = "rbxassetid://".. asset
+				}
+			}
+		}
+		_(args)
+	end
+	
+	return f3x
+end
+
+-- 天空盒功能
+local function createSkybox(skyboxId)
+	local f3x = createF3XFunctions()
+	if not f3x then return end
+	
+	local player = game.Players.LocalPlayer
+	local char = player.Character
+	if not char then return end
+	
+	getHDAdminCommand():InvokeServer(";fogcolor cyan")
+	wait(0.25)
+	
+	local e = math.floor(char.HumanoidRootPart.CFrame.x)
+	local f = math.floor(char.HumanoidRootPart.CFrame.y)
+	local g = math.floor(char.HumanoidRootPart.CFrame.z)
+	
+	f3x.CreatePart(CFrame.new(e, f, g) + Vector3.new(0,6,0), workspace)
+	
+	for i,v in game.Workspace:GetDescendants() do
+		if v:IsA("BasePart") and v.CFrame.x == e and v.CFrame.z == g then
+			f3x.SetName(v,"Sky")
+			f3x.AddMesh(v)
+			f3x.SetMesh(v,"111891702759441")
+			f3x.SetTexture(v,skyboxId)
+			f3x.MeshResize(v,Vector3.new(99999,99999,99999))
+			f3x.SetLocked(v,true)
+			break
+		end
+	end
+end
+
+-- 贴花垃圾功能
+local function createDecalSpam(decalId)
+	local f3x = createF3XFunctions()
+	if not f3x then return end
+	
+	for i,v in game.workspace:GetDescendants() do
+		if v:IsA("BasePart") then
+			spawn(function()
+				f3x.SetLocked(v,false)
+				local sides = {
+					Enum.NormalId.Front,
+					Enum.NormalId.Back,
+					Enum.NormalId.Right,
+					Enum.NormalId.Left,
+					Enum.NormalId.Bottom,
+					Enum.NormalId.Top
+				}
+				for _, side in ipairs(sides) do
+					f3x.SpawnDecal(v, side)
+					f3x.AddDecal(v, decalId, side)
+				end
+			end)
+		end
+	end 
+end
+
+-- 纹理垃圾功能
+local function createTextureSpam(textureId)
+	local f3x = createF3XFunctions()
+	if not f3x then return end
+	
+	for i,v in game.workspace:GetDescendants() do
+		if v:IsA("BasePart") then
+			spawn(function()
+				f3x.SetLocked(v,false)
+				local sides = {
+					Enum.NormalId.Front,
+					Enum.NormalId.Back,
+					Enum.NormalId.Right,
+					Enum.NormalId.Left,
+					Enum.NormalId.Bottom,
+					Enum.NormalId.Top
+				}
+				for _, side in ipairs(sides) do
+					f3x.SpawnTexture(v, side)
+					f3x.AddTexture(v, textureId, side)
+				end
+			end)
+		end
+	end 
+end
+
+-- 连接天空盒按钮
+skybox1Btn.MouseButton1Click:Connect(function()
+	createSkybox("118953088842031")
+end)
+
+skybox2Btn.MouseButton1Click:Connect(function()
+	createSkybox("118780143375538")
+end)
+
+islamSkyboxBtn.MouseButton1Click:Connect(function()
+	createSkybox("123452321164348")
+end)
+
+protoSkyboxBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";fogcolor black ;time 0")
+	wait(0.1)
+	createSkybox("84491519970706")
+end)
+
+ptkidSkyboxBtn.MouseButton1Click:Connect(function()
+	getHDAdminCommand():InvokeServer(";fogcolor black ;time 14")
+	wait(0.1)
+	createSkybox("96622965544848")
+end)
+
+skybox3Btn.MouseButton1Click:Connect(function()
+	createSkybox("118953088842031")
+end)
+
+-- 连接贴花垃圾按钮
+decalSpam1Btn.MouseButton1Click:Connect(function()
+	createDecalSpam("118953088842031")
+end)
+
+decalSpam2Btn.MouseButton1Click:Connect(function()
+	createDecalSpam("118780143375538")
+end)
+
+islamDecalSpamBtn.MouseButton1Click:Connect(function()
+	createDecalSpam("123452321164348")
+end)
+
+protoDecalSpamBtn.MouseButton1Click:Connect(function()
+	createDecalSpam("84491519970706")
+end)
+
+ptkidDecalSpamBtn.MouseButton1Click:Connect(function()
+	createDecalSpam("96622965544848")
+end)
+
+decalSpam3Btn.MouseButton1Click:Connect(function()
+	createDecalSpam("118953088842031")
+end)
+
+-- 连接纹理垃圾按钮
+protoTextureSpamBtn.MouseButton1Click:Connect(function()
+	createTextureSpam("84491519970706")
+end)
+
+ptkidTextureSpamBtn.MouseButton1Click:Connect(function()
+	createTextureSpam("96622965544848")
+end)
+
+-- 世界编辑功能按钮
+unanchorAllBtn.MouseButton1Click:Connect(function()
+	local f3x = createF3XFunctions()
+	if not f3x then return end
+	
+	for i,v in game.Workspace:GetDescendants() do
+		if v:IsA("BasePart") then
+			spawn(function()
+				f3x.SetLocked(v,false)
+				f3x.SetAnchor(false,v)
+			end)
+		end
+	end
+end)
+
+deleteBaseplateBtn.MouseButton1Click:Connect(function()
+	local f3x = createF3XFunctions()
+	if not f3x then return end
+	
+	local player = game.Players.LocalPlayer
+	local char = player.Character
+	if not char then return end
+	
+	local hrpx = math.floor(char.HumanoidRootPart.CFrame.x)
+	local hrpz = math.floor(char.HumanoidRootPart.CFrame.z)
+	local hrpy = math.floor(char.HumanoidRootPart.CFrame.y)
+	
+	function SpawnBasePlate()
+		f3x.CreatePart(CFrame.new(hrpx,hrpy-20,hrpz),workspace,"Spawn")
+		for i,v in game.Workspace:GetChildren() do
+			if v:IsA("BasePart") and v.CFrame.y == hrpy - 20 and v.CFrame.x == hrpx then
+				spawn(function()
+					f3x.Resize(v,Vector3.new(700,2,700),CFrame.new(hrpx,hrpy-20,hrpz))
+					f3x.Color(v,Color3.fromRGB(55,55,55))
+					f3x.toptexturecreate(v)
+					f3x.toptextureadd(v)
+					while wait(1) do
+						pcall(function()f3x.SetLocked(v,true)end)
+					end
+				end)
+			end
+		end
+	end
+	SpawnBasePlate()
+end)
+
+baseplateBtn.MouseButton1Click:Connect(function()
+	local f3x = createF3XFunctions()
+	if not f3x then return end
+	
+	local player = game.Players.LocalPlayer
+	local char = player.Character
+	if not char then return end
+	
+	local hrpx = math.floor(char.HumanoidRootPart.CFrame.x)
+	local hrpz = math.floor(char.HumanoidRootPart.CFrame.z)
+	local hrpy = math.floor(char.HumanoidRootPart.CFrame.y)
+	
+	function SpawnBasePlate()
+		f3x.CreatePart(CFrame.new(hrpx,hrpy-20,hrpz),workspace,"Spawn")
+		for i,v in game.Workspace:GetChildren() do
+			if v:IsA("BasePart") and v.CFrame.y == hrpy - 20 and v.CFrame.x == hrpx then
+				spawn(function()
+					f3x.Resize(v,Vector3.new(400,2,400),CFrame.new(hrpx,hrpy-20,hrpz))
+					f3x.Color(v,Color3.fromRGB(100,100,100))
+					f3x.toptexturecreate(v)
+					f3x.toptextureadd(v)
+					while wait(1) do
+						pcall(function()f3x.SetLocked(v,true)end)
+					end
+				end)
+			end
+		end
+	end
+	SpawnBasePlate()
+end)
+
+rdColorSpamBtn.MouseButton1Click:Connect(function()
+	local f3x = createF3XFunctions()
+	if not f3x then return end
+	
+	function randomise()
+		for i,v in game.Workspace:GetDescendants() do
+			if v:IsA("BasePart") then
+				spawn(function()
+					f3x.SetLocked(v,false)
+					f3x.Color(v,Color3.new(math.random(0,255)/255,math.random(0,255)/255,math.random(0,255)/255))
+				end)
+			end
+		end
+	end
+	randomise()
+end)
+
+colorSpam2Btn.MouseButton1Click:Connect(function()
+	local f3x = createF3XFunctions()
+	if not f3x then return end
+	
+	function randomise()
+		for i,v in game.Workspace:GetDescendants() do
+			if v:IsA("BasePart") then
+				spawn(function()
+					f3x.SetLocked(v,false)
+					f3x.Color(v,Color3.new(math.random(100,255)/255,math.random(100,255)/255,math.random(100,255)/255))
+				end)
+			end
+		end
+	end
+	randomise()
+end)
+
+destroyAllBtn.MouseButton1Click:Connect(function()
+	local f3x = createF3XFunctions()
+	if not f3x then return end
+	
+	function Punish(player)
+		local char = player.Character
+		if char then
+			for i,part in ipairs(char:GetDescendants()) do
+				if part:IsA("BasePart") then
+					f3x.DestroyPart(part)
+				end
+			end
+		end
+	end
+
+	for i,v in game.Players:GetPlayers() do
+		spawn(function()
+			pcall(function()
+				Punish(v)
+			end)
+		end)
+	end
+	wait(0.5)
+	
+	-- 销毁所有部件
+	for _, obj in pairs(workspace:GetDescendants()) do
+		if obj:IsA("Part") or obj:IsA("MeshPart") then
+			spawn(function()
+				pcall(function()
+					f3x.DestroyPart(obj)
+				end)
+			end)
+		end
+	end
+end)
+
+fireAllBtn.MouseButton1Click:Connect(function()
+	local f3x = createF3XFunctions()
+	if not f3x then return end
+	
+	function FireParts()
+		for i,v in game.Workspace:GetDescendants() do
+			if v:IsA("BasePart") then
+				spawn(function()
+					f3x.SetLocked(v,false)
+					f3x.AddFire(v)
+				end)
+			end
+		end
+	end
+	FireParts()
+end)
+
+-- Realm 功能
+realmBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	
+	-- 第一阶段：准备阶段
+	RequestCommand:InvokeServer(";btools me")
+	RequestCommand:InvokeServer(";sm Team t00kshaf1y join now!!")
+	wait(0.6)
+	RequestCommand:InvokeServer(";fogcolor black")
+	wait(0.5)
+	RequestCommand:InvokeServer(";punish all")
+	RequestCommand:InvokeServer(";m Hacked by us")
+	wait(0.1)
+	RequestCommand:InvokeServer(";sh You are about to go to our realm!!")
+	
+	-- 获取F3X工具
+	local player = game.Players.LocalPlayer
+	local char = player.Character
+	local backpack = player.Backpack
+
+	local function getf3x()
+		for _, v in ipairs(backpack:GetChildren()) do
+			if v:FindFirstChild("SyncAPI") then
+				return v
+			end
+		end
+		for _, v in ipairs(char:GetChildren()) do
+			if v:FindFirstChild("SyncAPI") then
+				return v
+			end
+		end
+		return nil
+	end
+	
+	local f3x = getf3x()
+	if not f3x then
+		warn("F3X tool not found")
+		return
+	end
+	
+	local syncapi = f3x.SyncAPI
+	local serverendpoint = syncapi.ServerEndpoint
+
+	-- 删除所有现有部件
+	local function delete(part)
+		local args = {
+			[1] = "Remove",
+			[2] = {
+				[1] = part
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	local function deleteall()
+		for _, v in ipairs(workspace:GetDescendants()) do
+			if v:IsA("BasePart") or v:IsA("UnionOperation") then
+				spawn(function()
+					delete(v)
+				end)
+			end
+		end
+	end
+
+	deleteall()
+	
+	-- F3X 功能函数
+	local function resize(part,size,cf)
+		local args = {
+			[1] = "SyncResize",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["CFrame"] = cf,
+					["Size"] = size
+				}
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	local function syncmaterial(part,mate,trans)
+		local args = {
+			[1] = "SyncMaterial",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Material"] = mate
+				}
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+	
+	local function transparency(part,trans)
+		local args = {
+			[1] = "SyncMaterial",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Transparency"] = trans
+				}
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	local function color(part, color)
+		local args = {
+			[1] = "SyncColor",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Color"] = color,
+					["UnionColoring"] = false
+				}
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	local function syncmeshid(part, id)
+		local args = {
+			[1] = "SyncMesh",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["MeshId"] = "rbxassetid://"..id
+				}
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	local function makemesh(part)
+		local args = {
+			[1] = "CreateMeshes",
+			[2] = {
+				[1] = {
+					["Part"] = part
+				}
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	local function syncmeshsize(part, vectora)
+		local args = {
+			[1] = "SyncMesh",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Scale"] = vectora
+				}
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	local function syncmeshtexture(part, id)
+		local args = {
+			[1] = "SyncMesh",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["TextureId"] = "rbxassetid://"..id
+				}
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	local function name(part, stringa)
+		local args = {
+			[1] = "SetName",
+			[2] = {
+				[1] = part
+			},
+			[3] = stringa
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	local function lock(part, boolean)
+		local args = {
+			[1] = "SetLocked",
+			[2] = {
+				[1] = part
+			},
+			[3] = boolean
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	local function setcollision(part, booleana)
+		local args = {
+			[1] = "SyncCollision",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["CanCollide"] = booleana
+				}
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	local function setanchor(part, boolean)
+		local args = {
+			[1] = "SyncAnchor",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Anchored"] = boolean
+				}
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	local function createdecal(part, side)
+		local args = {
+			[1] = "CreateTextures",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Face"] = side,
+					["TextureType"] = "Decal"
+				}
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+	
+	local function setdecal(part, asset, side)
+		local args = {
+			[1] = "SyncTexture",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Face"] = side,
+					["TextureType"] = "Decal",
+					["Texture"] = "rbxassetid://".. asset
+				}
+			}
+		}
+		serverendpoint:InvokeServer(unpack(args))
+	end
+
+	-- 创建领域基地
+	local function makerealmbase()
+		local position = CFrame.new(0, 5, 0)
+		local base = serverendpoint:InvokeServer("CreatePart", "Normal", position, workspace)
+		resize(base, Vector3.new(512, 16, 512), position)
+		syncmaterial(base, Enum.Material.Concrete)
+		color(base, Color3.new(0.513725, 0.513725, 0.513725))
+		name(base, "loltroll")
+		lock(base, true)
+
+		local spawnpos = CFrame.new(34.5, 8.1, -26)
+		local spawna = serverendpoint:InvokeServer("CreatePart", "Spawn", spawnpos, workspace)
+		resize(spawna, Vector3.new(20, 10, 20), spawnpos)
+		name(spawna, "SpawnLocation")
+		lock(spawna, true)
+
+		createdecal(spawna, Enum.NormalId.Top)
+		setdecal(spawna, "123452321164348", Enum.NormalId.Top)
+		transparency(spawna, 1)
+
+		local pos = CFrame.new(74.143, 24, -25.232)
+		local rules = serverendpoint:InvokeServer("CreatePart", "Normal", pos, workspace)
+		transparency(rules, 0)
+		setcollision(rules, false)
+		createdecal(rules, Enum.NormalId.Left)
+		setdecal(rules, "123452321164348", Enum.NormalId.Left)
+		color(rules, Color3.new(1, 1, 1))
+		resize(rules, Vector3.new(4, 23, 37), pos)
+
+		local pos = CFrame.new(1.143, 24, -25.232)
+		local bad = serverendpoint:InvokeServer("CreatePart", "Normal", pos, workspace)
+		transparency(bad, 1)
+		setcollision(bad, false)
+		createdecal(bad, Enum.NormalId.Right)
+		setdecal(bad, "118780143375538", Enum.NormalId.Right)
+		resize(bad, Vector3.new(4, 23, 37), pos)
+	end
+
+	-- 创建天空盒
+	local function sky()
+		local position = CFrame.new(0, 5, 0)
+		local sky = serverendpoint:InvokeServer("CreatePart", "Normal", position, workspace)
+		makemesh(sky)
+		syncmeshid(sky, "118780143375538")
+		syncmeshtexture(sky, "118953088842031")
+		syncmeshsize(sky, Vector3.new(99999, 99999, 99999))
+		lock(sky, true)
+		name(sky, "hackedlol")
+		setcollision(sky, false)
+	end
+
+	-- 取消锚定所有
+	local function unanchorall()
+		for _, v in ipairs(workspace:GetDescendants()) do
+			if v:IsA("BasePart") or v:IsA("UnionOperation") then
+				spawn(function()
+					setanchor(v, false)
+				end)
+			end
+		end
+	end
+
+	-- 执行领域创建
+	local function realm()
+		sky()
+		makerealmbase()
+	end
+
+	realm()
+
+	-- 第二阶段：玩家控制
+	RequestCommand:InvokeServer(";res all")
+	wait(0.3)
+	RequestCommand:InvokeServer(";r6 all")
+	RequestCommand:InvokeServer(";blur all")
+	wait(2.8)
+	RequestCommand:InvokeServer(";fog")
+	RequestCommand:InvokeServer(";sh This is the realm of team T00kshaf1y!")
+	RequestCommand:InvokeServer(";disco")
+	RequestCommand:InvokeServer(";n Team t00kshaf1y join now!!")
+	wait(2.0)
+	RequestCommand:InvokeServer(";alert all Welcome to our team's realm!!")
+	RequestCommand:InvokeServer(";fire all")
+	RequestCommand:InvokeServer(";dog all")
+	wait(1.6)
+	RequestCommand:InvokeServer(";title me t00kshaf1y")
+	RequestCommand:InvokeServer(";name all t00kshaf1y")
+	wait(2.0)
+	RequestCommand:InvokeServer(";time 23")
+	RequestCommand:InvokeServer(";music 1847661821 ;volume inf  ;savemap ;pitch 1.1")
+	wait(5.0)
+	RequestCommand:InvokeServer(";char all ttsghdvhfc2")
+	RequestCommand:InvokeServer(";freeze all")
+	RequestCommand:InvokeServer(";sh hacked by team t00kshaf1y")
+	RequestCommand:InvokeServer(";sm This game was destroyed by us!")    
+	wait(3.0)
+	RequestCommand:InvokeServer(";jail all")
+	RequestCommand:InvokeServer(";sh lol")
+	RequestCommand:InvokeServer(";loopkill all")
+end)
+
+-- 销毁地图功能
+destroyMapBtn.MouseButton1Click:Connect(function()
+	local RequestCommand = getHDAdminCommand()
+	RequestCommand:InvokeServer(";fog")
+	RequestCommand:InvokeServer(";disco")
+	RequestCommand:InvokeServer(";punish all")
+	RequestCommand:InvokeServer(";name all T00kshaf1y")
+	wait(2.8)
+	RequestCommand:InvokeServer(";music 1839246711")
+	RequestCommand:InvokeServer(";pitch 1.3")
+	RequestCommand:InvokeServer(";volume inf")
+	RequestCommand:InvokeServer(";time 14")
+end)
+
+-- 可拖拽功能
+local UserInputService = game:GetService("UserInputService")
+local gui = MainFrame
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+local function update(input)
+	local delta = input.Position - dragStart
+	gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+gui.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = gui.Position
+
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+gui.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		dragInput = input
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		update(input)
+	end
+end)
+
+-- 调整滚动框架大小基于内容
+local function updateScrollSize()
+	local totalHeight = 0
+	for _, child in ipairs(ScrollingFrame:GetChildren()) do
+		if child:IsA("GuiObject") then
+			totalHeight = totalHeight + child.Size.Y.Offset + UIListLayout.Padding.Offset
+		end
+	end
+	ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, totalHeight + 50)
+end
+
+wait(1)
+updateScrollSize()
