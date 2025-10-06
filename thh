@@ -1,7 +1,9 @@
--- T00kshaf1y's F3X GUI v2 - FINAL CORRECT VERSION
+-- T00kshaf1y's F3X GUI v2 - FIXED DRAG AND MUSIC
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
 
 -- 删除旧GUI
 if PlayerGui:FindFirstChild("T00kshaf1yGUI") then
@@ -13,7 +15,9 @@ local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "T00kshaf1yGUI"
 ScreenGui.Parent = PlayerGui
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.ResetOnSpawn = false
 
+-- 主框架
 local MainFrame = Instance.new("Frame")
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
@@ -21,40 +25,47 @@ MainFrame.BorderColor3 = Color3.fromRGB(0, 255, 255)
 MainFrame.BorderSizePixel = 2
 MainFrame.Position = UDim2.new(0.3, 0, 0.1, 0)
 MainFrame.Size = UDim2.new(0, 500, 0, 600)
+MainFrame.Active = true
+MainFrame.Draggable = true  -- 启用拖动
 
--- 拖动功能
-local UIS = game:GetService("UserInputService")
-local dragToggle = nil
-local dragSpeed = 0.25
-local dragStart = nil
-local startPos = nil
+-- 简单的拖动功能
+local dragging = false
+local dragInput, dragStart, startPos
 
-local function updateInput(input)
-	local delta = input.Position - dragStart
-	local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
-		startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-	game:GetService("TweenService"):Create(MainFrame, TweenInfo.new(dragSpeed), {Position = position}):Play()
+local function update(input)
+    local delta = input.Position - dragStart
+    MainFrame.Position = UDim2.new(
+        startPos.X.Scale, 
+        startPos.X.Offset + delta.X,
+        startPos.Y.Scale, 
+        startPos.Y.Offset + delta.Y
+    )
 end
 
 MainFrame.InputBegan:Connect(function(input)
-	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
-		dragToggle = true
-		dragStart = input.Position
-		startPos = MainFrame.Position
-		input.Changed:Connect(function()
-			if input.UserInputState == Enum.UserInputState.End then
-				dragToggle = false
-			end
-		end)
-	end
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
 end)
 
 MainFrame.InputChanged:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-		if dragToggle then
-			updateInput(input)
-		end
-	end
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
 end)
 
 -- 滚动框架
@@ -62,7 +73,9 @@ local ScrollingFrame = Instance.new("ScrollingFrame")
 ScrollingFrame.Parent = MainFrame
 ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
 ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 3000)
-ScrollingFrame.ScrollBarThickness = 10
+ScrollingFrame.ScrollBarThickness = 12
+ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 255, 255)
+ScrollingFrame.ScrollingDirection = Enum.ScrollingDirection.Y
 
 local UIListLayout = Instance.new("UIListLayout")
 UIListLayout.Parent = ScrollingFrame
@@ -73,9 +86,9 @@ local Title = Instance.new("TextLabel")
 Title.Parent = ScrollingFrame
 Title.Size = UDim2.new(0, 480, 0, 50)
 Title.BackgroundTransparency = 1
-Title.Text = "T00kshaf1y's F3X GUI v2"
+Title.Text = "T00kshaf1y's F3X GUI v2 - DRAG ME"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextSize = 30
+Title.TextSize = 24
 Title.LayoutOrder = 1
 
 -- 按钮创建
@@ -210,24 +223,59 @@ for i, music in ipairs(musicButtons) do
     ButtonInstances[50 + i] = CreateButton(music.text, music.order)
 end
 
--- HD Admin功能
+-- HD Admin功能 - 修复版本
 local function HDAdminCommand(command)
-    local ReplicatedStorage = game:GetService("ReplicatedStorage")
-    local HDAdminClient = ReplicatedStorage:FindFirstChild("HDAdminHDClient")
-    if HDAdminClient then
-        local RequestCommand = HDAdminClient.Signals.RequestCommandSilent
-        RequestCommand:InvokeServer(command)
+    local success, result = pcall(function()
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        
+        -- 检查HD Admin是否存在
+        local HDAdminClient = ReplicatedStorage:FindFirstChild("HDAdminClient") or 
+                             ReplicatedStorage:FindFirstChild("HDAdminHDClient")
+        
+        if HDAdminClient then
+            local Signals = HDAdminClient:FindFirstChild("Signals")
+            if Signals then
+                local RequestCommand = Signals:FindFirstChild("RequestCommand") or 
+                                      Signals:FindFirstChild("RequestCommandSilent")
+                if RequestCommand then
+                    RequestCommand:InvokeServer(command)
+                    print("✅ Command executed: " .. command)
+                    return true
+                end
+            end
+        end
+        
+        -- 如果HD Admin不存在，尝试其他方法
+        local ChatService = game:GetService("Chat")
+        local SayMessageRequest = ChatService:FindFirstChild("SayMessageRequest")
+        if SayMessageRequest then
+            if command:sub(1,1) == ";" then
+                SayMessageRequest:FireServer(command:sub(2), "All")
+                print("✅ Chat command: " .. command)
+                return true
+            end
+        end
+        
+        warn("❌ HD Admin not found or command failed: " .. command)
+        return false
+    end)
+    
+    if not success then
+        warn("❌ Error executing command: " .. command)
+        warn("Error: " .. tostring(result))
     end
+    
+    return success
 end
 
 -- 连接按钮功能
-ButtonInstances[2].MouseButton1Click:Connect(function() HDAdminCommand(";btools me") end) -- Get Btools
+ButtonInstances[2].MouseButton1Click:Connect(function() HDAdminCommand(";btools me") end)
 
 -- 4个Hint按钮
-ButtonInstances[11].MouseButton1Click:Connect(function() HDAdminCommand(";h Join our team now!") end) -- Hint 1
-ButtonInstances[12].MouseButton1Click:Connect(function() HDAdminCommand(";h T00kshaf1y is here!") end) -- Hint 2
-ButtonInstances[13].MouseButton1Click:Connect(function() HDAdminCommand(";h Hacked by us!") end) -- Hint 3
-ButtonInstances[14].MouseButton1Click:Connect(function() HDAdminCommand(";h Team t00kshaf1y on top!") end) -- Hint 4
+ButtonInstances[11].MouseButton1Click:Connect(function() HDAdminCommand(";h Join our team now!") end)
+ButtonInstances[12].MouseButton1Click:Connect(function() HDAdminCommand(";h T00kshaf1y is here!") end)
+ButtonInstances[13].MouseButton1Click:Connect(function() HDAdminCommand(";h Hacked by us!") end)
+ButtonInstances[14].MouseButton1Click:Connect(function() HDAdminCommand(";h Team t00kshaf1y on top!") end)
 
 -- 消息按钮
 ButtonInstances[9].MouseButton1Click:Connect(function() HDAdminCommand(";sm Team t00kshaf1y join today!!") end)
@@ -330,14 +378,14 @@ ButtonInstances[47].MouseButton1Click:Connect(function()
     HDAdminCommand(";loopkill all")
 end)
 
--- 音乐
-ButtonInstances[51].MouseButton1Click:Connect(function() HDAdminCommand(";music 109312105079673 ;volume inf") end)
-ButtonInstances[52].MouseButton1Click:Connect(function() HDAdminCommand(";music 113158802785741 ;pitch 0.1 ;volume inf") end)
-ButtonInstances[53].MouseButton1Click:Connect(function() HDAdminCommand(";music 1847661821 ;pitch 0.9 ;volume inf") end)
-ButtonInstances[54].MouseButton1Click:Connect(function() HDAdminCommand(";music 122552583844805 ;pitch 0.10 ;volume inf") end)
-ButtonInstances[55].MouseButton1Click:Connect(function() HDAdminCommand(";music 1839246711 ;pitch 1.1 ;volume inf") end)
-ButtonInstances[56].MouseButton1Click:Connect(function() HDAdminCommand(";music 16190783774 ;pitch 1.2 ;volume inf") end)
-ButtonInstances[57].MouseButton1Click:Connect(function() HDAdminCommand(";music 93932484780481 ;pitch 0.09 ;volume inf") end)
-ButtonInstances[58].MouseButton1Click:Connect(function() HDAdminCommand(";music 3152833592 ;volume inf") end)
-ButtonInstances[59].MouseButton1Click:Connect(function() HDAdminCommand(";music 3892375615 ;pitch 1.0 ;volume inf") end)
-ButtonInstances[60].MouseButton1Click:Connect(function() HDAdminCommand(";music 73293994328169 ;volume inf ;pitch 0.1") end)
+-- 音乐按钮 - 修复版本
+ButtonInstances[51].MouseButton1Click:Connect(function() HDAdminCommand(";music 109312105079673") HDAdminCommand(";volume inf") end)
+ButtonInstances[52].MouseButton1Click:Connect(function() HDAdminCommand(";music 113158802785741") HDAdminCommand(";pitch 0.1") HDAdminCommand(";volume inf") end)
+ButtonInstances[53].MouseButton1Click:Connect(function() HDAdminCommand(";music 1847661821") HDAdminCommand(";pitch 0.9") HDAdminCommand(";volume inf") end)
+ButtonInstances[54].MouseButton1Click:Connect(function() HDAdminCommand(";music 122552583844805") HDAdminCommand(";pitch 0.10") HDAdminCommand(";volume inf") end)
+ButtonInstances[55].MouseButton1Click:Connect(function() HDAdminCommand(";music 1839246711") HDAdminCommand(";pitch 1.1") HDAdminCommand(";volume inf") end)
+ButtonInstances[56].MouseButton1Click:Connect(function() HDAdminCommand(";music 16190783774") HDAdminCommand(";pitch 1.2") HDAdminCommand(";volume inf") end)
+ButtonInstances[57].MouseButton1Click:Connect(function() HDAdminCommand(";music 93932484780481") HDAdminCommand(";pitch 0.09") HDAdminCommand(";volume inf") end)
+ButtonInstances[58].MouseButton1Click:Connect(function() HDAdminCommand(";music 3152833592") HDAdminCommand(";volume inf") end)
+ButtonInstances[59].MouseButton1Click:Connect(function() HDAdminCommand(";music 3892375615") HDAdminCommand(";pitch 1.0") HDAdminCommand(";volume inf") end)
+ButtonInstances[60].MouseButton1Click:Connect(function() HDAdminCommand(";music 73293994328169") HDAdminCommand(";volume inf") HDAdminCommand(";pitch 0.1") end)
