@@ -1,59 +1,54 @@
--- Instances:
+-- T00kshaf1y's F3X GUI v2 - FINAL COMPLETE VERSION
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
 
+-- 创建GUI
 local ScreenGui = Instance.new("ScreenGui")
-local Frame = Instance.new("Frame")
-local ScrollingFrame = Instance.new("ScrollingFrame")
-local UIListLayout = Instance.new("UIListLayout")
-
--- Properties:
-
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.Name = "T00kshaf1yGUI"
+ScreenGui.Parent = PlayerGui
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.ResetOnSpawn = false
 
-Frame.Parent = ScreenGui
-Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
-Frame.BorderColor3 = Color3.fromRGB(0, 255, 255)
-Frame.BorderSizePixel = 0
-Frame.Position = UDim2.new(0.509130776, 0, 0.163316652, 0)
-Frame.Size = UDim2.new(0, 546, 0, 594)
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+MainFrame.BorderColor3 = Color3.fromRGB(0, 255, 255)
+MainFrame.BorderSizePixel = 2
+MainFrame.Position = UDim2.new(0.3, 0, 0.1, 0)
+MainFrame.Size = UDim2.new(0, 500, 0, 600)
 
--- Add background decal to frame
 local BackgroundDecal = Instance.new("Decal")
-BackgroundDecal.Parent = Frame
+BackgroundDecal.Parent = MainFrame
 BackgroundDecal.Texture = "rbxassetid://123452321164348"
 BackgroundDecal.Face = Enum.NormalId.Top
 
-ScrollingFrame.Parent = Frame
+local ScrollingFrame = Instance.new("ScrollingFrame")
+ScrollingFrame.Parent = MainFrame
 ScrollingFrame.Active = true
-ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ScrollingFrame.BackgroundTransparency = 1.000
-ScrollingFrame.BorderSizePixel = 0
+ScrollingFrame.BackgroundTransparency = 1
 ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
 ScrollingFrame.CanvasSize = UDim2.new(0, 0, 3, 0)
-ScrollingFrame.ScrollBarThickness = 8
+ScrollingFrame.ScrollBarThickness = 10
 
+local UIListLayout = Instance.new("UIListLayout")
 UIListLayout.Parent = ScrollingFrame
 UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout.Padding = UDim.new(0, 5)
 
--- Title Label
-local TextLabel = Instance.new("TextLabel")
-TextLabel.Parent = ScrollingFrame
-TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel.BackgroundTransparency = 1.000
-TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-TextLabel.BorderSizePixel = 0
-TextLabel.Size = UDim2.new(0, 543, 0, 50)
-TextLabel.Font = Enum.Font.SourceSans
-TextLabel.Text = "T00kshaf1y's gui for f3x v2"
-TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel.TextSize = 35.000
-TextLabel.LayoutOrder = 1
+-- 标题
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Parent = ScrollingFrame
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Size = UDim2.new(0, 480, 0, 50)
+TitleLabel.Font = Enum.Font.SourceSansBold
+TitleLabel.Text = "T00kshaf1y's F3X GUI v2"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.TextSize = 30
+TitleLabel.LayoutOrder = 1
 
--- Function to create standard buttons
-local function createButton(name, layoutOrder, text, textSize)
+-- 按钮创建函数
+local function CreateButton(name, text, layoutOrder, textSize)
     local button = Instance.new("TextButton")
     button.Name = name
     button.Parent = ScrollingFrame
@@ -61,214 +56,138 @@ local function createButton(name, layoutOrder, text, textSize)
     button.BorderColor3 = Color3.fromRGB(255, 0, 0)
     button.BorderSizePixel = 2
     button.LayoutOrder = layoutOrder
-    button.Size = UDim2.new(0, 200, 0, 50)
+    button.Size = UDim2.new(0, 450, 0, 40)
     button.Font = Enum.Font.SourceSans
     button.Text = text
     button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.TextSize = textSize or 18.000
+    button.TextSize = textSize or 16
     return button
 end
 
--- Create all buttons from both GUIs
+-- 所有按钮定义
 local buttons = {
-    -- Tools Section
-    {name = "GetBtools", layout = 2, text = "Get Btools", size = 18},
-    {name = "SendMessage", layout = 3, text = "Send Message", size = 18},
+    -- 工具
+    {name = "GetBtools", text = "Get Btools", order = 2},
     
-    -- Skybox Section
-    {name = "Skybox1", layout = 4, text = "Skybox", size = 18},
-    {name = "Skybox2", layout = 5, text = "Skybox 2", size = 22},
-    {name = "IslamSkybox", layout = 6, text = "Islam Skybox", size = 22},
-    {name = "Skybox3", layout = 7, text = "Skybox 3", size = 22},
-    {name = "ProtoSkybox", layout = 8, text = "Proto Skybox", size = 14},
-    {name = "PtkidSkybox2", layout = 9, text = "Ptkid Skybox 2", size = 14},
+    -- 天空盒
+    {name = "Skybox1", text = "Skybox 1", order = 3},
+    {name = "Skybox2", text = "Skybox 2", order = 4},
+    {name = "IslamSkybox", text = "Islam Skybox", order = 5},
     
-    -- Decal Section
-    {name = "DecalSpam", layout = 10, text = "Decal Spam", size = 18},
-    {name = "DecalSpam2", layout = 11, text = "Decal Spam 2", size = 22},
-    {name = "IslamDecalSpam", layout = 12, text = "Islam Decal Spam", size = 22},
-    {name = "DecalSpam3", layout = 13, text = "Decal Spam 3", size = 22},
-    {name = "ProtoDecalSpam", layout = 14, text = "Proto Decal Spam", size = 14},
-    {name = "PtkidDecalSpam2", layout = 15, text = "Ptkid Decal Spam 2", size = 14},
+    -- 贴图垃圾邮件
+    {name = "DecalSpam1", text = "Decal Spam 1", order = 6},
+    {name = "DecalSpam2", text = "Decal Spam 2", order = 7},
+    {name = "IslamDecalSpam", text = "Islam Decal Spam", order = 8},
     
-    -- Texture Section
-    {name = "ProtoTextureSpam", layout = 16, text = "Proto Texture Spam", size = 14},
-    {name = "PtkidTextureSpam2", layout = 17, text = "Ptkid Texture Spam 2", size = 14},
+    -- 消息系统
+    {name = "Message1", text = "Send Message 1", order = 9},
+    {name = "Message2", text = "Send Message 2", order = 10},
+    {name = "Hint1", text = "Hint Message 1", order = 11},
+    {name = "Hint2", text = "Hint Message 2", order = 12},
     
-    -- Chat Section
-    {name = "ForceChat", layout = 18, text = "Force Chat", size = 18},
-    {name = "Message1", layout = 19, text = "Message 1", size = 14},
-    {name = "Message2", layout = 20, text = "Message 2", size = 14},
+    -- 警报系统
+    {name = "Alert1", text = "Alert Message 1", order = 13},
+    {name = "Alert2", text = "Alert Message 2", order = 14},
     
-    -- Fire Section
-    {name = "FireAll", layout = 21, text = "Fire All", size = 18},
+    -- 特效
+    {name = "FireAll", text = "Fire All Parts", order = 15},
+    {name = "Disco", text = "Disco Lights", order = 16},
+    {name = "Fog", text = "Fog Effect", order = 17},
     
-    -- Player Management
-    {name = "TitleMe", layout = 22, text = "Title Me", size = 18},
-    {name = "TitleOthers", layout = 23, text = "Title Others", size = 14},
-    {name = "InvisibleAll", layout = 24, text = "Invisible All", size = 14},
-    {name = "TeamNameAll", layout = 25, text = "Team Name All", size = 14},
-    {name = "BecomeT00kshaf1y", layout = 26, text = "Become T00kshaf1y", size = 14},
-    {name = "BecomeTubers93", layout = 27, text = "Become Tubers93", size = 14},
-    {name = "BecomeC00lkidd", layout = 28, text = "Become c00lkidd", size = 14},
+    -- 玩家控制
+    {name = "TitleMe", text = "Title Me", order = 18},
+    {name = "TitleOthers", text = "Title Others", order = 19},
+    {name = "InvisibleAll", text = "Invisible All", order = 20},
+    {name = "FreezeAll", text = "Freeze All", order = 21},
+    {name = "JailAll", text = "Jail All", order = 22},
+    {name = "KillAll", text = "Kill All", order = 23},
+    {name = "IceAll", text = "Ice All", order = 24},
     
-    -- Time Section
-    {name = "Night", layout = 29, text = "Night", size = 18},
-    {name = "Day", layout = 30, text = "Day", size = 18},
+    -- 地图控制
+    {name = "UnanchorAll", text = "Unanchor All", order = 25},
+    {name = "DestroyAll", text = "Destroy All", order = 26},
+    {name = "RandomColorSpam", text = "Random Color Spam", order = 27},
+    {name = "Baseplate", text = "Create Baseplate", order = 28},
     
-    -- Map Section
-    {name = "SaveMap", layout = 31, text = "Save Map", size = 18},
-    {name = "DeleteBaseplate", layout = 32, text = "Delete Baseplate", size = 25},
-    {name = "Baseplate", layout = 33, text = "Baseplate", size = 14},
-    {name = "DestroyAll", layout = 34, text = "Destroy All", size = 25},
-    {name = "DestroyMap", layout = 35, text = "Destroy The Map", size = 40},
+    -- 时间
+    {name = "Night", text = "Set Night", order = 29},
+    {name = "Day", text = "Set Day", order = 30},
     
-    -- Color Section
-    {name = "RandomColorSpam", layout = 36, text = "Random Color Spam", size = 25},
-    {name = "ColorSpam2", layout = 37, text = "Color Spam 2", size = 14},
+    -- 传送
+    {name = "BringAll", text = "Bring All Players", order = 31},
+    {name = "TPAllMeepCity", text = "TP All to Meep City", order = 32},
     
-    -- Anchor Section
-    {name = "UnanchorAll", layout = 38, text = "Unanchor All", size = 25},
-    {name = "UnanchorAll2", layout = 39, text = "Unanchor All 2", size = 14},
+    -- 反作弊
+    {name = "AntiSkid", text = "Anti Skid", order = 33},
     
-    -- Teleport Section
-    {name = "BringAll", layout = 40, text = "Bring All", size = 18},
-    {name = "TPAllMeepCity", layout = 41, text = "TP All to Meep City 4", size = 14},
-    {name = "TPOtherMeepCity", layout = 42, text = "TP Other to Meep City 4", size = 14},
+    -- 车辆
+    {name = "CarAll", text = "Car All Players", order = 34},
+    {name = "TankAll", text = "Tank All Players", order = 35},
+    {name = "FlingAll", text = "Fling All Players", order = 36},
     
-    -- Crash Section
-    {name = "CrashAll", layout = 43, text = "Crash All", size = 18},
+    -- 踢人惩罚
+    {name = "KickAll", text = "Kick All Players", order = 37},
+    {name = "PunishAll", text = "Punish All Players", order = 38},
     
-    -- Anti-Skid Section
-    {name = "AntiSkid", layout = 44, text = "Anti Skid", size = 18},
-    {name = "AntiSkid2", layout = 45, text = "Anti Skid 2", size = 14},
+    -- 团队
+    {name = "TeamSpam", text = "Create Team Spam", order = 39},
+    {name = "TeamNameAll", text = "Team Name All", order = 40},
     
-    -- Freeze Section
-    {name = "FreezeAll", layout = 46, text = "Freeze All", size = 14},
+    -- 角色变身
+    {name = "BecomeT00kshaf1y", text = "Become T00kshaf1y", order = 41},
+    {name = "BecomeC00lkidd", text = "Become c00lkidd", order = 42},
+    {name = "BecomeTubers93", text = "Become Tubers93", order = 43},
     
-    -- Jail Section
-    {name = "JailAll", layout = 47, text = "Jail All", size = 14},
+    -- REALM
+    {name = "Realm", text = "CREATE REALM", order = 44, size = 20},
     
-    -- Hint Section
-    {name = "Hint1", layout = 48, text = "Hint 1", size = 14},
-    {name = "Hint2", layout = 49, text = "Hint 2", size = 14},
-    {name = "Hint3", layout = 50, text = "Hint 3", size = 14},
-    {name = "Hint4", layout = 51, text = "Hint 4", size = 14},
-    
-    -- Dog Section
-    {name = "DogAll", layout = 52, text = "Dog All", size = 14},
-    
-    -- Fog Section
-    {name = "Fog", layout = 53, text = "Fog", size = 14},
-    
-    -- Disco Section
-    {name = "Disco", layout = 54, text = "Disco", size = 14},
-    
-    -- Tank Section
-    {name = "TankAll", layout = 55, text = "Tank All", size = 14},
-    
-    -- Kill Section
-    {name = "KillAll", layout = 56, text = "Kill All", size = 14},
-    
-    -- Realm Section
-    {name = "Realm", layout = 57, text = "Realm", size = 40},
-    
-    -- Car Section
-    {name = "CarAll", layout = 58, text = "Car All", size = 14},
-    
-    -- Fling Section
-    {name = "FlingAll", layout = 59, text = "Fling All", size = 14},
-    
-    -- Unfly Section
-    {name = "UnflyAll", layout = 60, text = "Unfly All", size = 14},
-    
-    -- Mute Section
-    {name = "MuteAll", layout = 61, text = "Mute All", size = 14},
-    
-    -- Blur Section
-    {name = "BlurAll", layout = 62, text = "Blur All", size = 14},
-    
-    -- Alert Section
-    {name = "Alert", layout = 63, text = "Alert", size = 14},
-    {name = "Alert2", layout = 64, text = "Alert 2", size = 14},
-    
-    -- Kick Section
-    {name = "KickAll", layout = 65, text = "Kick All", size = 14},
-    
-    -- Punish Section (只有一个独立的Punish按钮)
-    {name = "PunishAll", layout = 66, text = "Punish All", size = 14},
-    
-    -- Team Spam Section
-    {name = "TeamSpam", layout = 67, text = "Team Spam", size = 14},
-    
-    -- Ice Section
-    {name = "IceAll", layout = 68, text = "Ice All", size = 14},
+    -- 保存地图
+    {name = "SaveMap", text = "Save Map", order = 45},
 }
 
--- Create all buttons
-local buttonInstances = {}
-for _, buttonInfo in pairs(buttons) do
-    buttonInstances[buttonInfo.name] = createButton(buttonInfo.name, buttonInfo.layout, buttonInfo.text, buttonInfo.size)
+-- 创建按钮
+local ButtonInstances = {}
+for _, btnInfo in ipairs(buttons) do
+    ButtonInstances[btnInfo.name] = CreateButton(btnInfo.name, btnInfo.text, btnInfo.order, btnInfo.size)
 end
 
--- Music Section Label
+-- 音乐区
 local MusicLabel = Instance.new("TextLabel")
 MusicLabel.Parent = ScrollingFrame
-MusicLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-MusicLabel.BackgroundTransparency = 1.000
-MusicLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-MusicLabel.BorderSizePixel = 0
-MusicLabel.Size = UDim2.new(0, 543, 0, 30)
-MusicLabel.Font = Enum.Font.SourceSans
-MusicLabel.Text = "Music Section"
+MusicLabel.BackgroundTransparency = 1
+MusicLabel.Size = UDim2.new(0, 480, 0, 30)
+MusicLabel.Font = Enum.Font.SourceSansBold
+MusicLabel.Text = "🎵 MUSIC SECTION 🎵"
 MusicLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-MusicLabel.TextSize = 25.000
-MusicLabel.LayoutOrder = 69
+MusicLabel.TextSize = 20
+MusicLabel.LayoutOrder = 50
 
--- Music Buttons
+-- 音乐按钮
 local musicButtons = {
-    {name = "Music1", layout = 70, text = "IDK", size = 18},
-    {name = "Music2", layout = 71, text = "Ba Fang Lai Cai", size = 18},
-    {name = "Music3", layout = 72, text = "Team's Theme", size = 18},
-    {name = "Music4", layout = 73, text = "c00lkidd", size = 18},
-    {name = "Music5", layout = 74, text = "Jumpstyle", size = 14},
-    {name = "Music6", layout = 75, text = "Funk", size = 14},
-    {name = "Music7", layout = 76, text = "Wind of the Flords", size = 14},
-    {name = "Music8", layout = 77, text = "Whistle", size = 14},
-    {name = "Music9", layout = 78, text = "IDK 2", size = 14},
-    {name = "SpartaRemix", layout = 79, text = "Sparta Remix", size = 14},
+    {name = "Music1", text = "IDK Music", order = 51},
+    {name = "Music2", text = "Ba Fang Lai Cai", order = 52},
+    {name = "Music3", text = "Team's Theme", order = 53},
+    {name = "Music4", text = "c00lkidd Theme", order = 54},
+    {name = "Music5", text = "Jumpstyle", order = 55},
+    {name = "Music6", text = "Funk", order = 56},
+    {name = "Music7", text = "Wind of the Flords", order = 57},
+    {name = "Music8", text = "Whistle", order = 58},
+    {name = "Music9", text = "IDK 2", order = 59},
+    {name = "MusicSparta", text = "Sparta Remix", order = 60},
 }
 
--- Create music buttons
-for _, buttonInfo in pairs(musicButtons) do
-    buttonInstances[buttonInfo.name] = createButton(buttonInfo.name, buttonInfo.layout, buttonInfo.text, buttonInfo.size)
+for _, musicInfo in ipairs(musicButtons) do
+    ButtonInstances[musicInfo.name] = CreateButton(musicInfo.name, musicInfo.text, musicInfo.order)
 end
 
--- Scripts:
-
-local function KHLZ_fake_script() -- Frame.LocalScript 
-    local script = Instance.new('LocalScript', Frame)
-
-    local UserInputService = game:GetService("UserInputService")
-    
-    local gui = script.Parent
-    
-    local dragging
-    local dragInput
-    local dragStart
-    local startPos
-    
-    local function update(input)
-        local delta = input.Position - dragStart
-        gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-    end
-    
+-- 可拖动脚本
+local function MakeDraggable(gui)
+    local dragging, dragInput, dragStart, startPos
     gui.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = true
             dragStart = input.Position
             startPos = gui.Position
-    
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
                     dragging = false
@@ -276,507 +195,267 @@ local function KHLZ_fake_script() -- Frame.LocalScript
             end)
         end
     end)
-    
     gui.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
             dragInput = input
         end
     end)
-    
-    UserInputService.InputChanged:Connect(function(input)
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
         if input == dragInput and dragging then
-            update(input)
+            local delta = input.Position - dragStart
+            gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
         end
-    end
+    end)
 end
-coroutine.wrap(KHLZ_fake_script)()
+MakeDraggable(MainFrame)
 
--- F3X API Functions
-local function getF3XTool()
-    local player = game.Players.LocalPlayer
-    local char = player.Character
-    local backpack = player.Backpack
-    
-    for _, v in ipairs(backpack:GetChildren()) do
-        if v:FindFirstChild("SyncAPI") then
-            return v
-        end
-    end
-    for _, v in ipairs(char:GetChildren()) do
-        if v:FindFirstChild("SyncAPI") then
-            return v
-        end
-    end
-    return nil
-end
-
-local f3x = getF3XTool()
-local remote = f3x and f3x.SyncAPI.ServerEndpoint
-
-local function f3xInvoke(args)
-    if remote then
-        remote:InvokeServer(unpack(args))
-    end
-end
-
--- F3X Building Functions
-local function SetCollision(part, boolean)
-    local args = {
-        [1] = "SyncCollision",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["CanCollide"] = boolean
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function SetAnchor(boolean, part)
-    local args = {
-        [1] = "SyncAnchor",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["Anchored"] = boolean
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function CreatePart(cf, parent, partType)
-    local args = {
-        [1] = "CreatePart",
-        [2] = partType or "Normal",
-        [3] = cf,
-        [4] = parent
-    }
-    f3xInvoke(args)
-end
-
-local function DestroyPart(part)
-    local args = {
-        [1] = "Remove",
-        [2] = {
-            [1] = part
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function Resize(part, size, cf)
-    local args = {
-        [1] = "SyncResize",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["CFrame"] = cf,
-                ["Size"] = size
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function AddMesh(part)
-    local args = {
-        [1] = "CreateMeshes",
-        [2] = {
-            [1] = {
-                ["Part"] = part
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function SetMesh(part, meshid)
-    local args = {
-        [1] = "SyncMesh",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["MeshId"] = "rbxassetid://"..meshid
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function SetTexture(part, texid)
-    local args = {
-        [1] = "SyncMesh",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["TextureId"] = "rbxassetid://"..texid
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function SetName(part, stringg)
-    local args = {
-        [1] = "SetName",
-        [2] = {
-            [1] = part
-        },
-        [3] = stringg
-    }
-    f3xInvoke(args)
-end
-
-local function MeshResize(part, size)
-    local args = {
-        [1] = "SyncMesh",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["Scale"] = size
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function SetLocked(part, boolean)
-    local args = {
-        [1] = "SetLocked",
-        [2] = {
-            [1] = part
-        },
-        [3] = boolean
-    }
-    f3xInvoke(args)
-end
-
-local function SetTrans(part, int)
-    local args = {
-        [1] = "SyncMaterial",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["Transparency"] = int
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function Color(part, color)
-    local args = {
-        [1] = "SyncColor",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["Color"] = color,
-                ["UnionColoring"] = false
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function SpawnDecal(part, side)
-    local args = {
-        [1] = "CreateTextures",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["Face"] = side,
-                ["TextureType"] = "Decal"
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function AddDecal(part, asset, side)
-    local args = {
-        [1] = "SyncTexture",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["Face"] = side,
-                ["TextureType"] = "Decal",
-                ["Texture"] = "rbxassetid://".. asset
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function SpawnTexture(part, side)
-    local args = {
-        [1] = "CreateTextures",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["Face"] = side,
-                ["TextureType"] = "Texture"
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function AddTexture(part, asset, side)
-    local args = {
-        [1] = "SyncTexture",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["Face"] = side,
-                ["TextureType"] = "Texture",
-                ["Texture"] = "rbxassetid://".. asset
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
-local function AddFire(part)
-    local args = {
-        [1] = "CreateDecorations",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["DecorationType"] = "Fire"
-            }
-        }
-    }
-    f3xInvoke(args)
-end
-
--- HD Admin Functions
+-- HD Admin功能
 local function HDAdminCommand(command)
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
-    local RequestCommand = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandSilent
-    RequestCommand:InvokeServer(command)
-end
-
--- Skybox Functions
-local function Sky(id)
-    local player = game.Players.LocalPlayer
-    local char = player.Character
-    local e = math.floor(char.HumanoidRootPart.CFrame.x)
-    local f = math.floor(char.HumanoidRootPart.CFrame.y)
-    local g = math.floor(char.HumanoidRootPart.CFrame.z)
-    
-    CreatePart(CFrame.new(e, f, g) + Vector3.new(0,6,0), workspace)
-    
-    for i,v in game.Workspace:GetDescendants() do
-        if v:IsA("BasePart") and v.CFrame.x == e and v.CFrame.z == g then
-            SetName(v,"Sky")
-            AddMesh(v)
-            SetMesh(v,"111891702759441")
-            SetTexture(v,id)
-            MeshResize(v,Vector3.new(99999,99999,99999))
-            SetLocked(v,true)
-        end
+    local HDAdminClient = ReplicatedStorage:FindFirstChild("HDAdminHDClient")
+    if HDAdminClient then
+        local RequestCommand = HDAdminClient:WaitForChild("Signals"):WaitForChild("RequestCommandSilent")
+        RequestCommand:InvokeServer(command)
+    else
+        warn("HD Admin not found!")
     end
 end
 
--- Decal Spam Functions
-local function DecalSpam(id)
-    for i,v in game.workspace:GetDescendants() do
-        if v:IsA("BasePart") then
-            spawn(function()
-                SetLocked(v,false)
-                SpawnDecal(v,Enum.NormalId.Front)
-                AddDecal(v,id,Enum.NormalId.Front)
-                SpawnDecal(v,Enum.NormalId.Back)
-                AddDecal(v,id,Enum.NormalId.Back)
-                SpawnDecal(v,Enum.NormalId.Right)
-                AddDecal(v,id,Enum.NormalId.Right)
-                SpawnDecal(v,Enum.NormalId.Left)
-                AddDecal(v,id,Enum.NormalId.Left)
-                SpawnDecal(v,Enum.NormalId.Bottom)
-                AddDecal(v,id,Enum.NormalId.Bottom)
-                SpawnDecal(v,Enum.NormalId.Top)
-                AddDecal(v,id,Enum.NormalId.Top)
-            end)
-        end
-    end 
-end
+-- 连接所有按钮
+-- 工具
+ButtonInstances["GetBtools"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";btools me")
+end)
 
--- Texture Spam Functions
-local function TextureSpam(id)
-    for i,v in game.workspace:GetDescendants() do
-        if v:IsA("BasePart") then
-            spawn(function()
-                SetLocked(v,false)
-                SpawnTexture(v,Enum.NormalId.Front)
-                AddTexture(v,id,Enum.NormalId.Front)
-                SpawnTexture(v,Enum.NormalId.Back)
-                AddTexture(v,id,Enum.NormalId.Back)
-                SpawnTexture(v,Enum.NormalId.Right)
-                AddTexture(v,id,Enum.NormalId.Right)
-                SpawnTexture(v,Enum.NormalId.Left)
-                AddTexture(v,id,Enum.NormalId.Left)
-                SpawnTexture(v,Enum.NormalId.Bottom)
-                AddTexture(v,id,Enum.NormalId.Bottom)
-                SpawnTexture(v,Enum.NormalId.Top)
-                AddTexture(v,id,Enum.NormalId.Top)
-            end)
-        end
-    end 
-end
+-- 消息系统
+ButtonInstances["Message1"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";sm Team t00kshaf1y join today!!")
+end)
 
--- Color Spam Functions
-local function RandomColorSpam()
-    for i,v in game.Workspace:GetDescendants() do
-        if v:IsA("BasePart") then
-            spawn(function()
-                SetLocked(v,false)
-                Color(v,Color3.new(math.random(0,255)/255, math.random(0,255)/255, math.random(0,255)/255))
-            end)
-        end
-    end
-end
+ButtonInstances["Message2"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";sm T00kshaf1y has hacked this server!")
+end)
 
--- Fire All Function
-local function FireAll()
-    for i,v in game.Workspace:GetDescendants() do
-        spawn(function()
-            SetLocked(v,false)
-            AddFire(v)
-        end)
-    end
-end
+ButtonInstances["Hint1"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";h Join our team now!")
+end)
 
--- Unanchor All Function
-local function UnanchorAll()
-    for i,v in game.Workspace:GetDescendants() do
-        spawn(function()
-            SetLocked(v,false)
-            SetAnchor(false,v)
-        end)
-    end
-end
+ButtonInstances["Hint2"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";h T00kshaf1y is here!")
+end)
 
--- Destroy All Function
-local function DestroyAll()
-    for i,v in game.Workspace:GetDescendants() do
-        if v:IsA("BasePart") then
-            spawn(function()
-                DestroyPart(v)
-            end)
-        end
-    end
-end
+-- 警报系统
+ButtonInstances["Alert1"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";alert all HACKED BY T00KSHAF1Y")
+end)
 
--- Baseplate Function
-local function CreateBaseplate()
-    local player = game.Players.LocalPlayer
-    local char = player.Character
-    local hrpx = math.floor(char.HumanoidRootPart.CFrame.x)
-    local hrpz = math.floor(char.HumanoidRootPart.CFrame.z)
-    local hrpy = math.floor(char.HumanoidRootPart.CFrame.y)
-    
-    CreatePart(CFrame.new(hrpx,hrpy-20,hrpz),workspace,"Spawn")
-    
-    for i,v in game.Workspace:GetChildren() do
-        if v:IsA("BasePart") and v.CFrame.y == hrpy - 20 and v.CFrame.x == hrpx then
-            spawn(function()
-                Resize(v,Vector3.new(700,2,700),CFrame.new(hrpx,hrpy-20,hrpz))
-                Color(v,Color3.fromRGB(55,55,55))
-                SpawnTexture(v,Enum.NormalId.Top)
-                AddTexture(v,"0",Enum.NormalId.Top)
-                while wait(1) do
-                    pcall(function() SetLocked(v,true) end)
-                end
-            end)
-        end
-    end
-end
+ButtonInstances["Alert2"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";alert all Welcome to Team t00kshaf1y!")
+end)
 
-local function CreateRealm()
+-- 玩家控制
+ButtonInstances["TitleMe"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";titleb me T00kshaf1y")
+end)
+
+ButtonInstances["TitleOthers"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";title all Team t00kshaf1y")
+end)
+
+ButtonInstances["InvisibleAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";invisible all")
+end)
+
+ButtonInstances["FreezeAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";freeze all")
+end)
+
+ButtonInstances["JailAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";jail all")
+end)
+
+ButtonInstances["KillAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";kill all")
+end)
+
+ButtonInstances["IceAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";ice all")
+end)
+
+-- 地图控制
+ButtonInstances["UnanchorAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";unanchor all")
+end)
+
+ButtonInstances["DestroyAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";destroy all")
+end)
+
+ButtonInstances["RandomColorSpam"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";randomcolor all")
+end)
+
+-- 时间控制
+ButtonInstances["Night"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";time 23")
+end)
+
+ButtonInstances["Day"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";time 14")
+end)
+
+-- 传送
+ButtonInstances["BringAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";bring all")
+end)
+
+ButtonInstances["TPAllMeepCity"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";forceplace all 109147333821356")
+end)
+
+-- 反作弊
+ButtonInstances["AntiSkid"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";hideguis others")
+    HDAdminCommand(";uncmdbar2 others")
+    HDAdminCommand(";mute others")
+end)
+
+-- 车辆
+ButtonInstances["CarAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";car all")
+end)
+
+ButtonInstances["TankAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";tank all")
+end)
+
+ButtonInstances["FlingAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";fling all")
+end)
+
+-- 踢人惩罚
+ButtonInstances["KickAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";kick all")
+end)
+
+ButtonInstances["PunishAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";punish all")
+end)
+
+-- 团队
+ButtonInstances["TeamSpam"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";createteam red T00kshaf1y")
+    HDAdminCommand(";createteam blue T00kshaf1y")
+    HDAdminCommand(";createteam green T00kshaf1y")
+end)
+
+ButtonInstances["TeamNameAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";name all T00kshaf1y")
+end)
+
+-- 角色变身
+ButtonInstances["BecomeT00kshaf1y"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";char me ttsghdvhfc2")
+    HDAdminCommand(";name me t00kshaf1y")
+end)
+
+ButtonInstances["BecomeC00lkidd"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";char me c00lkiddsb4k")
+    HDAdminCommand(";name me c00lkidd")
+end)
+
+ButtonInstances["BecomeTubers93"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";char me Tubers93qm")
+    HDAdminCommand(";name me Tubers93")
+end)
+
+-- 保存地图
+ButtonInstances["SaveMap"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";savemap")
+end)
+
+-- 特效
+ButtonInstances["FireAll"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";fire all")
+end)
+
+ButtonInstances["Disco"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";disco")
+end)
+
+ButtonInstances["Fog"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";fog")
+end)
+
+-- 音乐系统
+ButtonInstances["Music1"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";music 109312105079673 ;volume inf")
+end)
+
+ButtonInstances["Music2"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";music 113158802785741 ;pitch 0.1 ;volume inf")
+end)
+
+ButtonInstances["Music3"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";music 1847661821 ;pitch 0.9 ;volume inf")
+end)
+
+ButtonInstances["Music4"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";music 122552583844805 ;pitch 0.10 ;volume inf")
+end)
+
+ButtonInstances["Music5"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";music 1839246711 ;pitch 1.1 ;volume inf")
+end)
+
+ButtonInstances["Music6"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";music 16190783774 ;pitch 1.2 ;volume inf")
+end)
+
+ButtonInstances["Music7"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";music 93932484780481 ;pitch 0.09 ;volume inf")
+end)
+
+ButtonInstances["Music8"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";music 3152833592 ;volume inf")
+end)
+
+ButtonInstances["Music9"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";music 3892375615 ;pitch 1.0 ;volume inf")
+end)
+
+ButtonInstances["MusicSparta"].MouseButton1Click:Connect(function()
+    HDAdminCommand(";music 73293994328169 ;volume inf ;pitch 0.1")
+end)
+
+-- REALM功能 (完整独立脚本)
+ButtonInstances["Realm"].MouseButton1Click:Connect(function()
+    -- Realm完整脚本
     HDAdminCommand(";btools me")
     HDAdminCommand(";sm Team t00kshaf1y join now!!")
-    wait(0.6)
-    HDAdminCommand(";fogcolor black")
     wait(0.5)
+    HDAdminCommand(";fogcolor black")
     HDAdminCommand(";punish all")
-    HDAdminCommand(";m Hacked by us")
-    wait(0.1)
-    HDAdminCommand(";sh You are about to go to our realm!!")
-      
-    for _, v in ipairs(workspace:GetDescendants()) do
-        if v:IsA("BasePart") or v:IsA("UnionOperation") then
-            spawn(function()
-                DestroyPart(v)
-            end)
-        end
-    end
-    
-    wait(1)
-    
-    local position = CFrame.new(0, 5, 0)
-    local base = CreatePart(position, workspace, "Normal")
-    Resize(base, Vector3.new(512, 16, 512), position)
-    Color(base, Color3.fromRGB(100, 100, 100))
-    SetName(base, "RealmBase")
-    SetLocked(base, true)
-    
-    local spawnpos = CFrame.new(34.5, 8.1, -26)
-    local spawna = CreatePart(spawnpos, workspace, "Spawn")
-    Resize(spawna, Vector3.new(20, 10, 20), spawnpos)
-    SetName(spawna, "SpawnLocation")
-    SetLocked(spawna, true)
-    
-    local skyPosition = CFrame.new(0, 5, 0)
-    local sky = CreatePart(skyPosition, workspace, "Normal")
-    AddMesh(sky)
-    SetMesh(sky, "111891702759441")
-    SetTexture(sky, "118953088842031")
-    MeshResize(sky, Vector3.new(99999, 99999, 99999))
-    SetLocked(sky, true)
-    SetName(sky, "Skybox")
-    SetCollision(sky, false)
-
     HDAdminCommand(";res all")
-    wait(0.3)
     HDAdminCommand(";r6 all")
+    wait(1.0)
     HDAdminCommand(";blur all")
-    wait(2.8)
     HDAdminCommand(";fog")
-    HDAdminCommand(";sh This is the realm of team T00kshaf1y!")
     HDAdminCommand(";disco")
-    HDAdminCommand(";n Team t00kshaf1y join now!!")
-    wait(2.0)
-    HDAdminCommand(";alert all Welcome to our team's realm!!")
+    HDAdminCommand(";alert all Welcome to Team t00kshaf1y Realm!")
+    wait(1.5)
     HDAdminCommand(";fire all")
     HDAdminCommand(";dog all")
-    wait(1.6)
     HDAdminCommand(";title me t00kshaf1y")
     HDAdminCommand(";name all t00kshaf1y")
-    wait(2.0)
+    wait(1.5)
     HDAdminCommand(";time 23")
     HDAdminCommand(";music 1847661821 ;volume inf ;pitch 1.1")
-    wait(5.0)
     HDAdminCommand(";char all ttsghdvhfc2")
     HDAdminCommand(";freeze all")
-    HDAdminCommand(";sh hacked by team t00kshaf1y")
-    HDAdminCommand(";sm This game was destroyed by us!")    
-    wait(3.0)
+    wait(2.0)
     HDAdminCommand(";jail all")
-    HDAdminCommand(";sh lol")
     HDAdminCommand(";loopkill all")
-    
-    print("Realm creation completed!")
-end
-
-buttonInstances["Realm"].MouseButton1Click:Connect(function()
-    CreateRealm()
 end)
 
-buttonInstances["PunishAll"].MouseButton1Click:Connect(function()
-    HDAdminCommand(";punish all")
-end)
-
-
-print("T00kshaf1y's gui for f3x v2 loaded successfully! Realm function is ready!")
+print("T00kshaf1y's F3X GUI v2 loaded successfully! All functions ready!")
