@@ -694,21 +694,17 @@ local function CreateBaseplate()
     end
 end
 
--- Realm Function (完整的独立脚本)
 local function CreateRealm()
-    -- 开始Realm创建过程
     HDAdminCommand(";btools me")
     HDAdminCommand(";sm Team t00kshaf1y join now!!")
     wait(0.6)
     HDAdminCommand(";fogcolor black")
     wait(0.5)
-    -- Realm内部的punish命令，作为完整脚本的一部分
     HDAdminCommand(";punish all")
     HDAdminCommand(";m Hacked by us")
     wait(0.1)
     HDAdminCommand(";sh You are about to go to our realm!!")
-    
-    -- 清除地图
+      
     for _, v in ipairs(workspace:GetDescendants()) do
         if v:IsA("BasePart") or v:IsA("UnionOperation") then
             spawn(function()
@@ -719,7 +715,6 @@ local function CreateRealm()
     
     wait(1)
     
-    -- 创建基地
     local position = CFrame.new(0, 5, 0)
     local base = CreatePart(position, workspace, "Normal")
     Resize(base, Vector3.new(512, 16, 512), position)
@@ -727,14 +722,12 @@ local function CreateRealm()
     SetName(base, "RealmBase")
     SetLocked(base, true)
     
-    -- 创建生成点
     local spawnpos = CFrame.new(34.5, 8.1, -26)
     local spawna = CreatePart(spawnpos, workspace, "Spawn")
     Resize(spawna, Vector3.new(20, 10, 20), spawnpos)
     SetName(spawna, "SpawnLocation")
     SetLocked(spawna, true)
     
-    -- 创建天空盒
     local skyPosition = CFrame.new(0, 5, 0)
     local sky = CreatePart(skyPosition, workspace, "Normal")
     AddMesh(sky)
@@ -744,8 +737,7 @@ local function CreateRealm()
     SetLocked(sky, true)
     SetName(sky, "Skybox")
     SetCollision(sky, false)
-    
-    -- 完整的Realm设置流程
+
     HDAdminCommand(";res all")
     wait(0.3)
     HDAdminCommand(";r6 all")
@@ -778,20 +770,13 @@ local function CreateRealm()
     print("Realm creation completed!")
 end
 
--- 连接所有按钮功能
--- [这里省略了其他按钮的连接代码，保持与之前相同]
--- 只展示关键按钮：
-
--- Realm按钮 - 执行完整的独立脚本
 buttonInstances["Realm"].MouseButton1Click:Connect(function()
     CreateRealm()
 end)
 
--- 独立的Punish All按钮
 buttonInstances["PunishAll"].MouseButton1Click:Connect(function()
     HDAdminCommand(";punish all")
 end)
 
--- [其他所有按钮的连接代码...]
 
 print("T00kshaf1y's gui for f3x v2 loaded successfully! Realm function is ready!")
