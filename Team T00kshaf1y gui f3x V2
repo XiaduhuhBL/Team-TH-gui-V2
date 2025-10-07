@@ -42,7 +42,7 @@ TitleLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 TitleLabel.BorderSizePixel = 0
 TitleLabel.Size = UDim2.new(1, 0, 0.1, 0)
 TitleLabel.Font = Enum.Font.SourceSans
-TitleLabel.Text = "T00kshaf1y's Merged GUI V2.0"
+TitleLabel.Text = "T00kshaf1y's GUI for f3x V2"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TitleLabel.TextSize = 25.000
 
@@ -662,12 +662,12 @@ end)
 -- New Sprata Remix Button
 buttonInstances.SprataRemixBtn.MouseButton1Click:Connect(function()
 	HDAdminCommand(";music 73293994328169")
-	HDAdminCommand(";volume inf")
+	HDAdminCommand(";volume inf ;pitch 0.15")
 end)
 
 buttonInstances.TeamSpamBtn.MouseButton1Click:Connect(function()
 	HDAdminCommand(";createteam red hacked by t00kshaf1y")
-	HDAdminCommand(";createteam cyan team protokidd on top")
+	HDAdminCommand(";createteam cyan team t00kshaf1y on top")
 	HDAdminCommand(";createteam db Team t00kshaf1y")
 	HDAdminCommand(";createteam green t00kshaf1y on top")
 	HDAdminCommand(";createteam dg team t00kshaf1y on top")
@@ -848,7 +848,7 @@ buttonInstances.BecomeTubers93Btn.MouseButton1Click:Connect(function()
 end)
 
 buttonInstances.Alert2Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";alert all Hacked by team T00kshaf1y!!")
+	HDAdminCommand(";alert all Server has been haxed by Team T00kshaf1y!1!")
 end)
 
 buttonInstances.BecomeC00lkiddBtn.MouseButton1Click:Connect(function()
@@ -964,8 +964,7 @@ buttonInstances.RealmBtn.MouseButton1Click:Connect(function()
 	end
 	
 	HDAdminCommand(";res all")
-	wait(0.3)
-	HDAdminCommand(";r6 all")
+	HDAdminCommand(";r15 all")
 	HDAdminCommand(";blur all")
 	wait(2.8)
 	HDAdminCommand(";fog")
@@ -977,12 +976,13 @@ buttonInstances.RealmBtn.MouseButton1Click:Connect(function()
 	HDAdminCommand(";fire all")
 	HDAdminCommand(";dog all")
 	wait(1.6)
-	HDAdminCommand(";title me t00kshaf1y")
+	HDAdminCommand(";titleb me t00kshaf1y")
 	HDAdminCommand(";name all t00kshaf1y")
-	wait(2.0)
+    HDAdmincommand(";chatname all T00kshaf1y")
 	HDAdminCommand(";time 23")
+    wait(2.0)
 	HDAdminCommand(";music 1847661821 ;volume inf  ;savemap ;pitch 1.1")
-	wait(5.0)
+	wait(3.2)
 	HDAdminCommand(";char all ttsghdvhfc2")
 	HDAdminCommand(";freeze all")
 	HDAdminCommand(";sh hacked by team t00kshaf1y")
