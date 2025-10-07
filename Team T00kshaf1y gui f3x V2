@@ -1,16 +1,19 @@
--- Instances:
-local MainGUI = Instance.new("ScreenGui")
-local MainFrame = Instance.new("Frame")
-local ScrollingFrame = Instance.new("ScrollingFrame")
-local UIListLayout = Instance.new("UIListLayout")
-local TitleLabel = Instance.new("TextLabel")
+-- Combined GUI Script by t00kshaf1y
+-- All functions preserved, no duplicates removed
 
--- Properties:
-MainGUI.Name = "T00kshaf1yMergedGUI"
-MainGUI.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+-- Main GUI
+local MainGUI = Instance.new("ScreenGui")
+MainGUI.Name = "t00kshaf1yCombinedGUI"
+MainGUI.Parent = PlayerGui
 MainGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 MainGUI.ResetOnSpawn = false
 
+-- Main Frame
+local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = MainGUI
 MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
@@ -19,1007 +22,1342 @@ MainFrame.BorderSizePixel = 2
 MainFrame.Position = UDim2.new(0.3, 0, 0.1, 0)
 MainFrame.Size = UDim2.new(0, 500, 0, 600)
 
-ScrollingFrame.Parent = MainFrame
-ScrollingFrame.Active = true
-ScrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 100)
-ScrollingFrame.BackgroundTransparency = 0.5
-ScrollingFrame.BorderSizePixel = 0
-ScrollingFrame.Position = UDim2.new(0, 0, 0.1, 0)
-ScrollingFrame.Size = UDim2.new(1, 0, 0.9, 0)
-ScrollingFrame.CanvasSize = UDim2.new(0, 0, 5, 0)
-ScrollingFrame.ScrollBarThickness = 10
-ScrollingFrame.ScrollingDirection = Enum.ScrollingDirection.Y
-ScrollingFrame.VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Right
-
-UIListLayout.Parent = ScrollingFrame
-UIListLayout.Padding = UDim.new(0, 5)
-UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
+-- Title
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Name = "TitleLabel"
 TitleLabel.Parent = MainFrame
 TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 TitleLabel.BackgroundTransparency = 1.000
-TitleLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-TitleLabel.BorderSizePixel = 0
-TitleLabel.Size = UDim2.new(1, 0, 0.1, 0)
-TitleLabel.Font = Enum.Font.SourceSans
-TitleLabel.Text = "T00kshaf1y's GUI for f3x V2"
+TitleLabel.Size = UDim2.new(0, 500, 0, 40)
+TitleLabel.Font = Enum.Font.SourceSansBold
+TitleLabel.Text = "t00kshaf1y's Ultimate GUI V3.0"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLabel.TextSize = 25.000
+TitleLabel.TextSize = 24.000
 
--- Button creation function
-local function CreateButton(name, text)
+-- Scrolling Frame
+local ScrollFrame = Instance.new("ScrollingFrame")
+ScrollFrame.Name = "ScrollFrame"
+ScrollFrame.Parent = MainFrame
+ScrollFrame.Position = UDim2.new(0, 0, 0.07, 0)
+ScrollFrame.Size = UDim2.new(1, 0, 0.9, 0)
+ScrollFrame.CanvasSize = UDim2.new(0, 0, 3.5, 0) -- Increased for all buttons
+ScrollFrame.ScrollBarThickness = 8
+ScrollFrame.BackgroundTransparency = 1
+
+-- UI Layout
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.Parent = ScrollFrame
+UIListLayout.Padding = UDim.new(0, 5)
+
+-- Make GUI Draggable from all sides
+local UserInputService = game:GetService("UserInputService")
+local dragging = false
+local dragInput, dragStart, startPos
+
+local function update(input)
+	local delta = input.Position - dragStart
+	MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+MainFrame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = input.Position
+		startPos = MainFrame.Position
+		
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+MainFrame.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement then
+		dragInput = input
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		update(input)
+	end
+end)
+
+-- Function to create category labels
+local function createCategoryLabel(text, parent)
+	local label = Instance.new("TextLabel")
+	label.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+	label.BorderSizePixel = 0
+	label.Size = UDim2.new(0.95, 0, 0, 30)
+	label.Font = Enum.Font.SourceSansBold
+	label.Text = text
+	label.TextColor3 = Color3.fromRGB(255, 255, 255)
+	label.TextSize = 18
+	label.Parent = parent
+	return label
+end
+
+-- Function to create buttons
+local function createButton(text, parent, sizeX, sizeY)
 	local button = Instance.new("TextButton")
-	button.Name = name
-	button.Parent = ScrollingFrame
 	button.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 	button.BorderColor3 = Color3.fromRGB(255, 0, 0)
 	button.BorderSizePixel = 2
-	button.Size = UDim2.new(0.95, 0, 0, 40)
-	button.Position = UDim2.new(0.025, 0, 0, 0)
+	button.Size = UDim2.new(sizeX or 0.95, 0, 0, sizeY or 35)
 	button.Font = Enum.Font.SourceSans
 	button.Text = text
 	button.TextColor3 = Color3.fromRGB(255, 255, 255)
-	button.TextSize = 14.000
+	button.TextSize = 14
+	button.Parent = parent
 	return button
 end
 
--- Create all buttons from both scripts
-local buttons = {
-	-- First script buttons
-	{name = "BtoolsBtn", text = "Get Btools"},
-	{name = "SendMessageBtn", text = "Send Message"},
-	{name = "SkyboxBtn", text = "Skybox 1"},
-	{name = "DecalSpamBtn", text = "Decal Spam 1"},
-	{name = "ForceChatBtn", text = "Force Chat"},
-	{name = "FireAllBtn", text = "Fire All"},
-	{name = "TitleMeBtn", text = "Title Me"},
-	{name = "NightBtn", text = "Night Time"},
-	{name = "DayBtn", text = "Day Time"},
-	{name = "SaveMapBtn", text = "Save Map"},
-	{name = "Music1Btn", text = "Music 1"},
-	{name = "Music2Btn", text = "Music 2"},
-	{name = "TeamThemeBtn", text = "Team's Theme"},
-	{name = "C00lkiddBtn", text = "C00lkidd Music"},
-	{name = "JumpstyleBtn", text = "Jumpstyle Music"},
-	{name = "FunkBtn", text = "Funk Music"},
-	{name = "WindFlordsBtn", text = "Wind of the Flords"},
-	{name = "Skybox2Btn", text = "Skybox 2"},
-	{name = "DecalSpam2Btn", text = "Decal Spam 2"},
-	{name = "IslamSkyboxBtn", text = "Islam Skybox"},
-	{name = "IslamDecalSpamBtn", text = "Islam Decal Spam"},
-	{name = "UnanchorAllBtn", text = "Unanchor All"},
-	{name = "DeleteBaseplateBtn", text = "Delete Baseplate"},
-	{name = "ColorSpamBtn", text = "Random Color Spam"},
-	{name = "DestroyAllBtn", text = "Destroy All"},
-	{name = "BringAllBtn", text = "Bring All"},
-	{name = "CrashAllBtn", text = "Crash All"},
-	{name = "AntiSkidBtn", text = "Anti Skid"},
-	{name = "Skybox3Btn", text = "Skybox 3"},
-	{name = "DecalSpam3Btn", text = "Decal Spam 3"},
-	{name = "WhistleBtn", text = "Whistle Music"},
-	{name = "Music3Btn", text = "Music 3"},
-	{name = "TeamSpamBtn", text = "Team Spam"},
-	{name = "AlertBtn", text = "Alert All"},
-	{name = "SprataRemixBtn", text = "Sprata Remix"},
-	
-	-- Second script buttons
-	{name = "IceAllBtn", text = "Ice All"},
-	{name = "FreezeAllBtn", text = "Freeze All"},
-	{name = "JailAllBtn", text = "Jail All"},
-	{name = "Hint1Btn", text = "Hint 1"},
-	{name = "Hint2Btn", text = "Hint 2"},
-	{name = "Hint3Btn", text = "Hint 3"},
-	{name = "Hint4Btn", text = "Hint 4"},
-	{name = "DogAllBtn", text = "Dog All"},
-	{name = "Message1Btn", text = "Message 1"},
-	{name = "Message2Btn", text = "Message 2"},
-	{name = "FogBtn", text = "Fog"},
-	{name = "DiscoBtn", text = "Disco"},
-	{name = "InvisibleAllBtn", text = "Invisible All"},
-	{name = "TeamNameAllBtn", text = "Team Name All"},
-	{name = "TPAllMeepCityBtn", text = "TP All to Meep City"},
-	{name = "TPOtherMeepCityBtn", text = "TP Others to Meep City"},
-	{name = "ProtoSkyboxBtn", text = "Proto Skybox"},
-	{name = "ProtoDecalSpamBtn", text = "Proto Decal Spam"},
-	{name = "ProtoTextureSpamBtn", text = "Proto Texture Spam"},
-	{name = "ColorSpam2Btn", text = "Color Spam 2"},
-	{name = "PtkidSkyboxBtn", text = "Ptkid Skybox"},
-	{name = "PtkidDecalSpamBtn", text = "Ptkid Decal Spam"},
-	{name = "PtkidTextureSpamBtn", text = "Ptkid Texture Spam"},
-	{name = "UnanchorAll2Btn", text = "Unanchor All 2"},
-	{name = "TankAllBtn", text = "Tank All"},
-	{name = "BaseplateBtn", text = "Create Baseplate"},
-	{name = "KillAllBtn", text = "Kill All"},
-	{name = "AntiSkid2Btn", text = "Anti Skid 2"},
-	{name = "RealmBtn", text = "Create Realm"},
-	{name = "DestroyMapBtn", text = "Destroy Map"},
-	{name = "CarAllBtn", text = "Car All"},
-	{name = "FlingAllBtn", text = "Fling All"},
-	{name = "UnflyAllBtn", text = "Unfly All"},
-	{name = "TitleOthersBtn", text = "Title Others"},
-	{name = "MuteAllBtn", text = "Mute All"},
-	{name = "BlurAllBtn", text = "Blur All"},
-	{name = "BecomeT00kshaf1yBtn", text = "Become T00kshaf1y"},
-	{name = "BecomeTubers93Btn", text = "Become Tubers93"},
-	{name = "Alert2Btn", text = "Alert 2"},
-	{name = "BecomeC00lkiddBtn", text = "Become C00lkidd"},
-	{name = "KickAllBtn", text = "Kick All"},
-	{name = "PunishAllBtn", text = "Punish All"}
-}
-
--- Create all buttons
-local buttonInstances = {}
-for i, buttonInfo in ipairs(buttons) do
-	buttonInstances[buttonInfo.name] = CreateButton(buttonInfo.name, buttonInfo.text)
-end
-
--- Scripts:
-
--- Dragging Script
-local function DraggingScript()
-	local UserInputService = game:GetService("UserInputService")
-	local gui = MainFrame
-	local dragging
-	local dragInput
-	local dragStart
-	local startPos
-
-	local function update(input)
-		local delta = input.Position - dragStart
-		gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-	end
-
-	gui.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			dragging = true
-			dragStart = input.Position
-			startPos = gui.Position
-
-			input.Changed:Connect(function()
-				if input.UserInputState == Enum.UserInputState.End then
-					dragging = false
-				end
-			end)
-		end
-	end)
-
-	gui.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-			dragInput = input
-		end
-	end)
-
-	UserInputService.InputChanged:Connect(function(input)
-		if input == dragInput and dragging then
-			update(input)
-		end
-	end)
-end
-
--- HD Admin Command Function
-local function HDAdminCommand(command)
+-- Function to execute HD Admin commands
+local function executeHDCommand(command)
 	local ReplicatedStorage = game:GetService("ReplicatedStorage")
 	local RequestCommand = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandSilent
 	RequestCommand:InvokeServer(command)
 end
 
--- F3X Functions
-local function GetF3XTool()
+-- Function to get F3X tool
+local function getF3XTool()
 	local player = game.Players.LocalPlayer
 	local char = player.Character
-	local backpack = player.Backpack
 	local tool
 	
-	for _, v in ipairs(backpack:GetChildren()) do
-		if v:FindFirstChild("SyncAPI") then
-			tool = v
-			break
+	for _, v in ipairs(player:GetDescendants()) do
+		if v.Name == "SyncAPI" then
+			tool = v.Parent
 		end
 	end
 	
-	if not tool then
-		for _, v in ipairs(char:GetChildren()) do
-			if v:FindFirstChild("SyncAPI") then
-				tool = v
-				break
-			end
+	for _, v in ipairs(game.ReplicatedStorage:GetDescendants()) do
+		if v.Name == "SyncAPI" then
+			tool = v.Parent
 		end
 	end
 	
 	return tool
 end
 
-local function ExecuteF3XCommand(args)
-	local tool = GetF3XTool()
-	if tool then
-		local remote = tool.SyncAPI.ServerEndpoint
+-- F3X Functions
+local function setupF3XFunctions()
+	local tool = getF3XTool()
+	if not tool then return nil end
+	
+	local remote = tool.SyncAPI.ServerEndpoint
+	
+	local function _(args)
 		remote:InvokeServer(unpack(args))
 	end
-end
-
--- F3X Utility Functions (from original scripts)
-local function SetCollision(part,boolean)
-	local args = {
-		[1] = "SyncCollision",
-		[2] = {
-			[1] = {
-				["Part"] = part,
-				["CanCollide"] = boolean
+	
+	local f3x = {}
+	
+	f3x.SetCollision = function(part, boolean)
+		local args = {
+			[1] = "SyncCollision",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["CanCollide"] = boolean
+				}
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function SetAnchor(boolean,part)
-	local args = {
-		[1] = "SyncAnchor",
-		[2] = {
-			[1] = {
-				["Part"] = part,
-				["Anchored"] = boolean
+		_(args)
+	end
+	
+	f3x.SetAnchor = function(boolean, part)
+		local args = {
+			[1] = "SyncAnchor",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Anchored"] = boolean
+				}
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function CreatePart(cf,parent,partType)
-	local args = {
-		[1] = "CreatePart",
-		[2] = partType or "Normal",
-		[3] = cf,
-		[4] = parent
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function DestroyPart(part)
-	local args = {
-		[1] = "Remove",
-		[2] = {
-			[1] = part
+		_(args)
+	end
+	
+	f3x.CreatePart = function(cf, parent, partType)
+		local args = {
+			[1] = "CreatePart",
+			[2] = partType or "Normal",
+			[3] = cf,
+			[4] = parent
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function MovePart(part,cf)
-	local args = {
-		[1] = "SyncMove",
-		[2] = {
-			[1] = {
-				["Part"] = part,
-				["CFrame"] = cf
+		_(args)
+	end
+	
+	f3x.DestroyPart = function(part)
+		local args = {
+			[1] = "Remove",
+			[2] = {
+				[1] = part
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function Resize(part,size,cf)
-	local args = {
-		[1] = "SyncResize",
-		[2] = {
-			[1] = {
-				["Part"] = part,
-				["CFrame"] = cf,
-				["Size"] = size
+		_(args)
+	end
+	
+	f3x.MovePart = function(part, cf)
+		local args = {
+			[1] = "SyncMove",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["CFrame"] = cf
+				}
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function AddMesh(part)
-	local args = {
-		[1] = "CreateMeshes",
-		[2] = {
-			[1] = {
-				["Part"] = part
+		_(args)
+	end
+	
+	f3x.Resize = function(part, size, cf)
+		local args = {
+			[1] = "SyncResize",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["CFrame"] = cf,
+					["Size"] = size
+				}
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function SetMesh(part,meshid)
-	local args = {
-		[1] = "SyncMesh",
-		[2] = {
-			[1] = {
-				["Part"] = part,
-				["MeshId"] = "rbxassetid://"..meshid
+		_(args)
+	end
+	
+	f3x.AddMesh = function(part)
+		local args = {
+			[1] = "CreateMeshes",
+			[2] = {
+				[1] = {
+					["Part"] = part
+				}
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function SetTexture(part, texid)
-	local args = {
-		[1] = "SyncMesh",
-		[2] = {
-			[1] = {
-				["Part"] = part,
-				["TextureId"] = "rbxassetid://"..texid
+		_(args)
+	end
+	
+	f3x.SetMesh = function(part, meshid)
+		local args = {
+			[1] = "SyncMesh",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["MeshId"] = "rbxassetid://" .. meshid
+				}
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function SetName(part, stringg)
-	local args = {
-		[1] = "SetName",
-		[2] = {
-			[1] = part
-		},
-		[3] = stringg
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function MeshResize(part,size)
-	local args = {
-		[1] = "SyncMesh",
-		[2] = {
-			[1] = {
-				["Part"] = part,
-				["Scale"] = size
+		_(args)
+	end
+	
+	f3x.SetTexture = function(part, texid)
+		local args = {
+			[1] = "SyncMesh",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["TextureId"] = "rbxassetid://" .. texid
+				}
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function SetLocked(part,boolean)
-	local args = {
-		[1] = "SetLocked",
-		[2] = {
-			[1] = part
-		},
-		[3] = boolean
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function SetTrans(part,int)
-	local args = {
-		[1] = "SyncMaterial",
-		[2] = {
-			[1] = {
-				["Part"] = part,
-				["Transparency"] = int
+		_(args)
+	end
+	
+	f3x.SetName = function(part, stringg)
+		local args = {
+			[1] = "SetName",
+			[2] = {
+				[1] = part
+			},
+			[3] = stringg
+		}
+		_(args)
+	end
+	
+	f3x.MeshResize = function(part, size)
+		local args = {
+			[1] = "SyncMesh",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Scale"] = size
+				}
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function Color(part,color)
-	local args = {
-		[1] = "SyncColor",
-		[2] = {
-			[1] = {
-				["Part"] = part,
-				["Color"] = color,
-				["UnionColoring"] = false
+		_(args)
+	end
+	
+	f3x.SetLocked = function(part, boolean)
+		local args = {
+			[1] = "SetLocked",
+			[2] = {
+				[1] = part
+			},
+			[3] = boolean
+		}
+		_(args)
+	end
+	
+	f3x.SetTrans = function(part, int)
+		local args = {
+			[1] = "SyncMaterial",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Transparency"] = int
+				}
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function SpawnDecal(part,side)
-	local args = {
-		[1] = "CreateTextures",
-		[2] = {
-			[1] = {
-				["Part"] = part,
-				["Face"] = side,
-				["TextureType"] = "Decal"
+		_(args)
+	end
+	
+	f3x.Color = function(part, color)
+		local args = {
+			[1] = "SyncColor",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Color"] = color,
+					["UnionColoring"] = false
+				}
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function AddDecal(part,asset,side)
-	local args = {
-		[1] = "SyncTexture",
-		[2] = {
-			[1] = {
-				["Part"] = part,
-				["Face"] = side,
-				["TextureType"] = "Decal",
-				["Texture"] = "rbxassetid://".. asset
+		_(args)
+	end
+	
+	f3x.SpawnDecal = function(part, side)
+		local args = {
+			[1] = "CreateTextures",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Face"] = side,
+					["TextureType"] = "Decal"
+				}
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
-end
-
-local function AddFire(part)
-	local args = {
-		[1] = "CreateDecorations",
-		[2] = {
-			[1] = {
-				["Part"] = part,
-				["DecorationType"] = "Fire"
+		_(args)
+	end
+	
+	f3x.AddDecal = function(part, asset, side)
+		local args = {
+			[1] = "SyncTexture",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Face"] = side,
+					["TextureType"] = "Decal",
+					["Texture"] = "rbxassetid://" .. asset
+				}
 			}
 		}
-	}
-	ExecuteF3XCommand(args)
+		_(args)
+	end
+	
+	f3x.SpawnTexture = function(part, side)
+		local args = {
+			[1] = "CreateTextures",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Face"] = side,
+					["TextureType"] = "Texture"
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.AddTexture = function(part, asset, side)
+		local args = {
+			[1] = "SyncTexture",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Face"] = side,
+					["TextureType"] = "Texture",
+					["Texture"] = "rbxassetid://" .. asset
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.AddFire = function(part)
+		local args = {
+			[1] = "CreateDecorations",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["DecorationType"] = "Fire"
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.CreateSpotlight = function(part)
+		local args = {
+			[1] = "CreateLights",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["LightType"] = "SpotLight"
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.SyncLighting = function(part, brightness)
+		local args = {
+			[1] = "SyncLighting",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["LightType"] = "SpotLight",
+					["Brightness"] = brightness
+				}
+			}
+		}
+		_(args)
+	end
+	
+	f3x.Weld = function(part1, part2, lead)
+		local args = {
+			[1] = "CreateWelds",
+			[2] = {
+				[1] = part1,
+				[2] = part2
+			},
+			[3] = lead
+		}
+		_(args)
+	end
+	
+	f3x.Material = function(part, mate)
+		local args = {
+			[1] = "SyncMaterial",
+			[2] = {
+				[1] = {
+					["Part"] = part,
+					["Material"] = mate
+				}
+			}
+		}
+		_(args)
+	end
+	
+	return f3x
 end
 
--- Skybox function
-local function Sky(id)
+-- Skybox functions
+local function createSkybox(skyboxId)
+	local f3x = setupF3XFunctions()
+	if not f3x then return end
+	
 	local player = game.Players.LocalPlayer
 	local char = player.Character
-	local e = math.floor(char.HumanoidRootPart.CFrame.x)
-	local f = math.floor(char.HumanoidRootPart.CFrame.y)
-	local g = math.floor(char.HumanoidRootPart.CFrame.z)
+	if not char then return end
 	
-	CreatePart(CFrame.new(math.floor(e),math.floor(f),math.floor(g)) + Vector3.new(0,6,0),workspace)
+	local hrp = char:FindFirstChild("HumanoidRootPart")
+	if not hrp then return end
 	
-	for i,v in game.Workspace:GetDescendants() do
-		if v:IsA("BasePart") and v.CFrame.x == math.floor(e) and v.CFrame.z == math.floor(g) then
-			SetName(v,"Sky")
-			AddMesh(v)
-			SetMesh(v,"111891702759441")
-			SetTexture(v,id)
-			MeshResize(v,Vector3.new(99999,99999,99999))
-			SetLocked(v,true)
+	local e = math.floor(hrp.CFrame.X)
+	local f = math.floor(hrp.CFrame.Y)
+	local g = math.floor(hrp.CFrame.Z)
+	
+	f3x.CreatePart(CFrame.new(e, f + 6, g), workspace)
+	
+	for _, v in ipairs(workspace:GetDescendants()) do
+		if v:IsA("BasePart") and math.floor(v.CFrame.X) == e and math.floor(v.CFrame.Z) == g then
+			f3x.SetName(v, "Sky")
+			f3x.AddMesh(v)
+			f3x.SetMesh(v, "111891702759441")
+			f3x.SetTexture(v, skyboxId)
+			f3x.MeshResize(v, Vector3.new(99999, 99999, 99999))
+			f3x.SetLocked(v, true)
+			break
 		end
 	end
 end
 
--- Decal Spam function
-local function DecalSpam(id)
-	for i,v in game.workspace:GetDescendants() do
+-- Decal spam functions
+local function createDecalSpam(decalId)
+	local f3x = setupF3XFunctions()
+	if not f3x then return end
+	
+	for _, v in ipairs(workspace:GetDescendants()) do
 		if v:IsA("BasePart") then
 			spawn(function()
-				SetLocked(v,false)
-				SpawnDecal(v,Enum.NormalId.Front)
-				AddDecal(v,id,Enum.NormalId.Front)
-
-				SpawnDecal(v,Enum.NormalId.Back)
-				AddDecal(v,id,Enum.NormalId.Back)
-
-				SpawnDecal(v,Enum.NormalId.Right)
-				AddDecal(v,id,Enum.NormalId.Right)
-
-				SpawnDecal(v,Enum.NormalId.Left)
-				AddDecal(v,id,Enum.NormalId.Left)
-
-				SpawnDecal(v,Enum.NormalId.Bottom)
-				AddDecal(v,id,Enum.NormalId.Bottom)
-
-				SpawnDecal(v,Enum.NormalId.Top)
-				AddDecal(v,id,Enum.NormalId.Top)
-			end)
-		end
-	end 
-end
-
--- Fire All function
-local function FireAll()
-	for i,v in game.Workspace:GetDescendants() do
-		spawn(function()
-			SetLocked(v,false)
-			AddFire(v)
-		end)
-	end
-end
-
--- Unanchor All function
-local function UnanchorAll()
-	for i,v in game.Workspace:GetDescendants() do
-		spawn(function()
-			SetLocked(v,false)
-			SetAnchor(false,v)
-		end)
-	end
-end
-
--- Color Spam function
-local function ColorSpam()
-	for i,v in game.Workspace:GetDescendants() do
-		if v:IsA("BasePart") then
-			spawn(function()
-				SetLocked(v,false)
-				Color(v,Color3.new(math.random(0,255)/255,math.random(0,255)/255,math.random(0,255)/255))
-			end)
-		end
-	end
-end
-
--- Destroy All function
-local function DestroyAll()
-	for i,v in game.Players:GetPlayers() do
-		pcall(function()
-			if v.Character then
-				DestroyPart(v.Character)
-			end
-		end)
-	end
-	
-	-- Also destroy workspace parts
-	for i,v in game.Workspace:GetDescendants() do
-		if v:IsA("BasePart") or v:IsA("MeshPart") then
-			spawn(function()
-				DestroyPart(v)
-			end)
-		end
-	end
-end
-
--- Button Scripts
-
--- HD Admin Commands
-buttonInstances.BtoolsBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";btools me")
-end)
-
-buttonInstances.SendMessageBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";sm Team t00kshaf1y join today!!")
-end)
-
-buttonInstances.ForceChatBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";chat others T00kshaf1y is here")
-	wait(0.2)
-	HDAdminCommand(";chat others all hail t00kshaf1y")
-	wait(0.2)
-	HDAdminCommand(";chat others t00kshaf1y is god")
-end)
-
-buttonInstances.TitleMeBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";titleb me T00kshaf1y")
-end)
-
-buttonInstances.NightBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";time 23")
-end)
-
-buttonInstances.DayBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";time 14")
-end)
-
-buttonInstances.SaveMapBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";savemap")
-end)
-
-buttonInstances.BringAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";bring all")
-end)
-
-buttonInstances.CrashAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";crash others")
-end)
-
-buttonInstances.AntiSkidBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";hideguis others")
-	HDAdminCommand(";uncmdbar2 others")
-	HDAdminCommand(";mute others")
-end)
-
-buttonInstances.AlertBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";alert all HACKED BY T00KSHAF1Y")
-	HDAdminCommand(";n all Team t00kshaf1y join today!!")
-end)
-
--- Music Commands
-buttonInstances.Music1Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";music 109312105079673 ;volume inf")
-end)
-
-buttonInstances.Music2Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";music 113158802785741 ;pitch 0.1 ;volume inf")
-end)
-
-buttonInstances.TeamThemeBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";music 1847661821")
-	HDAdminCommand(";pitch 0.9")
-	HDAdminCommand(";volume inf")
-end)
-
-buttonInstances.C00lkiddBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";music 122552583844805")
-	HDAdminCommand(";pitch 0.10")
-	HDAdminCommand(";volume inf")
-end)
-
-buttonInstances.JumpstyleBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";music 1839246711")
-	HDAdminCommand(";pitch 1.1")
-	HDAdminCommand(";volume inf")
-end)
-
-buttonInstances.FunkBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";music 16190783774")
-	HDAdminCommand(";pitch 1.2")
-	HDAdminCommand(";volume inf")
-end)
-
-buttonInstances.WindFlordsBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";music 93932484780481")
-	HDAdminCommand(";pitch 0.09")
-	HDAdminCommand(";volume inf")
-end)
-
-buttonInstances.WhistleBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";music 3152833592")
-	HDAdminCommand(";volume inf")
-end)
-
-buttonInstances.Music3Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";music 3892375615")
-	HDAdminCommand(";pitch 1.0")
-	HDAdminCommand(";volume inf")
-end)
-
--- New Sprata Remix Button
-buttonInstances.SprataRemixBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";music 73293994328169")
-	HDAdminCommand(";volume inf ;pitch 0.15")
-end)
-
-buttonInstances.TeamSpamBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";createteam red hacked by t00kshaf1y")
-	HDAdminCommand(";createteam cyan team t00kshaf1y on top")
-	HDAdminCommand(";createteam db Team t00kshaf1y")
-	HDAdminCommand(";createteam green t00kshaf1y on top")
-	HDAdminCommand(";createteam dg team t00kshaf1y on top")
-	HDAdminCommand(";createteam pk t00kshaf1y on top")
-	HDAdminCommand(";createteam p t00kshaf1y on top")
-	HDAdminCommand(";createteam y t00kshaf1y on top")
-	HDAdminCommand(";createteam o t00kshaf1y on top")
-	HDAdminCommand(";createteam black t00kshaf1y on top")
-	HDAdminCommand(";createteam white t00kshaf1y on top")
-end)
-
--- F3X Commands
-buttonInstances.SkyboxBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";fogcolor cyan")
-	wait(0.25)
-	Sky("118953088842031")
-end)
-
-buttonInstances.DecalSpamBtn.MouseButton1Click:Connect(function()
-	DecalSpam("118953088842031")
-end)
-
-buttonInstances.FireAllBtn.MouseButton1Click:Connect(function()
-	FireAll()
-end)
-
-buttonInstances.Skybox2Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";fogcolor cyan")
-	wait(0.25)
-	Sky("118780143375538")
-end)
-
-buttonInstances.DecalSpam2Btn.MouseButton1Click:Connect(function()
-	DecalSpam("118780143375538")
-end)
-
-buttonInstances.IslamSkyboxBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";fogcolor cyan")
-	wait(0.25)
-	Sky("123452321164348")
-end)
-
-buttonInstances.IslamDecalSpamBtn.MouseButton1Click:Connect(function()
-	DecalSpam("123452321164348")
-end)
-
-buttonInstances.UnanchorAllBtn.MouseButton1Click:Connect(function()
-	UnanchorAll()
-end)
-
-buttonInstances.ColorSpamBtn.MouseButton1Click:Connect(function()
-	ColorSpam()
-end)
-
-buttonInstances.DestroyAllBtn.MouseButton1Click:Connect(function()
-	DestroyAll()
-end)
-
-buttonInstances.Skybox3Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";fogcolor cyan")
-	wait(0.25)
-	Sky("118953088842031")
-end)
-
-buttonInstances.DecalSpam3Btn.MouseButton1Click:Connect(function()
-	DecalSpam("118953088842031")
-end)
-
--- More Features Commands
-buttonInstances.IceAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";ice all")
-end)
-
-buttonInstances.FreezeAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";freeze all")
-end)
-
-buttonInstances.JailAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";jail all")
-end)
-
-buttonInstances.Hint1Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";sh Join our team now!")
-end)
-
-buttonInstances.Hint2Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";sh Hacked by us")
-end)
-
-buttonInstances.Hint3Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";h I will destroy this place")
-end)
-
-buttonInstances.Hint4Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";h T00kshaf1y is here")
-end)
-
-buttonInstances.DogAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";dog all")
-end)
-
-buttonInstances.Message1Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";sm T00kshaf1y has already haxed this server")
-end)
-
-buttonInstances.Message2Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";sm Team T00kshaf1y join now!!!")
-end)
-
-buttonInstances.FogBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";fog")
-end)
-
-buttonInstances.DiscoBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";disco")
-end)
-
-buttonInstances.InvisibleAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";invisible all")
-end)
-
-buttonInstances.TeamNameAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";name all T00kshaf1y")
-end)
-
-buttonInstances.TPAllMeepCityBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";forceplace all 109147333821356")
-end)
-
-buttonInstances.TPOtherMeepCityBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";forceplace other 109147333821356")
-end)
-
-buttonInstances.KillAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";kill all")
-end)
-
-buttonInstances.AntiSkid2Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";mute others ;hideguis others ;uncmdbar2 others")
-end)
-
-buttonInstances.TankAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";tank all")
-end)
-
-buttonInstances.CarAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";car all")
-end)
-
-buttonInstances.FlingAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";fling all")
-end)
-
-buttonInstances.UnflyAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";unfly all")
-end)
-
-buttonInstances.TitleOthersBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";title all Team t00kshaf1y join today")
-end)
-
-buttonInstances.MuteAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";mute all")
-end)
-
-buttonInstances.BlurAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";blur all")
-end)
-
-buttonInstances.BecomeT00kshaf1yBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";char me ttsghdvhfc2")
-	HDAdminCommand(";name me t00kshaf1y")
-end)
-
-buttonInstances.BecomeTubers93Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";char me Tubers93qm")
-	HDAdminCommand(";name me Tubers93")
-end)
-
-buttonInstances.Alert2Btn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";alert all Server has been haxed by Team T00kshaf1y!1!")
-end)
-
-buttonInstances.BecomeC00lkiddBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";char me c00lkiddsb4k")
-	HDAdminCommand(";name me c00lkidd")
-end)
-
-buttonInstances.KickAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";kick all")
-end)
-
-buttonInstances.PunishAllBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";punish all")
-end)
-
--- Additional F3X functions from second script
-buttonInstances.ProtoSkyboxBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";fogcolor black ;time 0")
-	wait(0.1)
-	Sky("84491519970706")
-end)
-
-buttonInstances.ProtoDecalSpamBtn.MouseButton1Click:Connect(function()
-	DecalSpam("84491519970706")
-end)
-
-buttonInstances.ColorSpam2Btn.MouseButton1Click:Connect(function()
-	for i,v in game.Workspace:GetDescendants() do
-		if v:IsA("BasePart") then
-			spawn(function()
-				SetLocked(v,false)
-				Color(v,Color3.new(math.random(100,255)/255,math.random(100,255)/255,math.random(100,255)/255))
-			end)
-		end
-	end
-end)
-
-buttonInstances.PtkidSkyboxBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";fogcolor black ;time 14")
-	wait(0.1)
-	Sky("96622965544848")
-end)
-
-buttonInstances.PtkidDecalSpamBtn.MouseButton1Click:Connect(function()
-	DecalSpam("96622965544848")
-end)
-
-buttonInstances.UnanchorAll2Btn.MouseButton1Click:Connect(function()
-	UnanchorAll()
-end)
-
--- Baseplate function
-buttonInstances.BaseplateBtn.MouseButton1Click:Connect(function()
-	local player = game.Players.LocalPlayer
-	local char = player.Character
-	local hrpx = math.floor(char.HumanoidRootPart.CFrame.x)
-	local hrpz = math.floor(char.HumanoidRootPart.CFrame.z)
-	local hrpy = math.floor(char.HumanoidRootPart.CFrame.y)
-	
-	CreatePart(CFrame.new(hrpx,hrpy-20,hrpz),workspace,"Spawn")
-	
-	for i,v in game.Workspace:GetChildren() do
-		if v:IsA("BasePart") and v.CFrame.y == hrpy - 20 and v.CFrame.x == hrpx then
-			spawn(function()
-				Resize(v,Vector3.new(400,2,400),CFrame.new(hrpx,hrpy-20,hrpz))
-				Color(v,Color3.fromRGB(100,100,100))
-				while wait(1) do
-					pcall(function()SetLocked(v,true)end)
+				f3x.SetLocked(v, false)
+				local sides = {
+					Enum.NormalId.Front,
+					Enum.NormalId.Back,
+					Enum.NormalId.Right,
+					Enum.NormalId.Left,
+					Enum.NormalId.Bottom,
+					Enum.NormalId.Top
+				}
+				
+				for _, side in ipairs(sides) do
+					f3x.SpawnDecal(v, side)
+					f3x.AddDecal(v, decalId, side)
 				end
 			end)
 		end
 	end
-end)
+end
 
--- Delete Baseplate function
-buttonInstances.DeleteBaseplateBtn.MouseButton1Click:Connect(function()
-	for i,v in game.Workspace:GetDescendants() do
-		if v.Name == "Baseplate" then
-			DestroyPart(v)
-		end
-	end
-end)
-
--- Realm function (simplified)
-buttonInstances.RealmBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";btools me")
-	HDAdminCommand(";sm Team t00kshaf1y join now!!")
-	wait(0.6)
-	HDAdminCommand(";fogcolor black")
-	wait(0.5)
-	HDAdminCommand(";punish all")
-	HDAdminCommand(";m Hacked by us")
-	wait(0.1)
-	HDAdminCommand(";sh You are about to go to our realm!!")
+-- Texture spam functions
+local function createTextureSpam(textureId)
+	local f3x = setupF3XFunctions()
+	if not f3x then return end
 	
-	-- Create basic realm platform
-	local player = game.Players.LocalPlayer
-	local char = player.Character
-	local hrpx = math.floor(char.HumanoidRootPart.CFrame.x)
-	local hrpz = math.floor(char.HumanoidRootPart.CFrame.z)
-	local hrpy = math.floor(char.HumanoidRootPart.CFrame.y)
-	
-	CreatePart(CFrame.new(hrpx,hrpy-5,hrpz),workspace,"Spawn")
-	
-	for i,v in game.Workspace:GetChildren() do
-		if v:IsA("BasePart") and v.CFrame.y == hrpy - 5 and v.CFrame.x == hrpx then
+	for _, v in ipairs(workspace:GetDescendants()) do
+		if v:IsA("BasePart") then
 			spawn(function()
-				Resize(v,Vector3.new(100,5,100),CFrame.new(hrpx,hrpy-5,hrpz))
-				Color(v,Color3.fromRGB(50,50,50))
-				SetLocked(v,true)
+				f3x.SetLocked(v, false)
+				local sides = {
+					Enum.NormalId.Front,
+					Enum.NormalId.Back,
+					Enum.NormalId.Right,
+					Enum.NormalId.Left,
+					Enum.NormalId.Bottom,
+					Enum.NormalId.Top
+				}
+				
+				for _, side in ipairs(sides) do
+					f3x.SpawnTexture(v, side)
+					f3x.AddTexture(v, textureId, side)
+				end
 			end)
 		end
 	end
-	
-	HDAdminCommand(";res all")
-	HDAdminCommand(";r15 all")
-	HDAdminCommand(";blur all")
-	wait(2.8)
-	HDAdminCommand(";fog")
-	HDAdminCommand(";sh This is the realm of team T00kshaf1y!")
-	HDAdminCommand(";disco")
-	HDAdminCommand(";n Team t00kshaf1y join now!!")
-	wait(2.0)
-	HDAdminCommand(";alert all Welcome to our team's realm!!")
-	HDAdminCommand(";fire all")
-	HDAdminCommand(";dog all")
-	wait(1.6)
-	HDAdminCommand(";titleb me t00kshaf1y")
-	HDAdminCommand(";name all t00kshaf1y")
-    HDAdmincommand(";chatname all T00kshaf1y")
-	HDAdminCommand(";time 23")
-    wait(2.0)
-	HDAdminCommand(";music 1847661821 ;volume inf  ;savemap ;pitch 1.1")
-	wait(3.2)
-	HDAdminCommand(";char all ttsghdvhfc2")
-	HDAdminCommand(";freeze all")
-	HDAdminCommand(";sh hacked by team t00kshaf1y")
-	HDAdminCommand(";sm This game was destroyed by us!")    
-	wait(3.0)
-	HDAdminCommand(";jail all")
-	HDAdminCommand(";sh lol")
-	HDAdminCommand(";loopkill all")
-end)
-
--- Destroy Map function
-buttonInstances.DestroyMapBtn.MouseButton1Click:Connect(function()
-	HDAdminCommand(";fog")
-	HDAdminCommand(";disco")
-	HDAdminCommand(";punish all")
-	HDAdminCommand(";name all T00kshaf1y")
-	wait(2.8)
-	HDAdminCommand(";music 1839246711")
-	HDAdminCommand(";pitch 1.3")
-	HDAdminCommand(";volume inf")
-	HDAdminCommand(";time 14")
-end)
-
--- Initialize dragging
-DraggingScript()
-
--- Adjust canvas size based on content
-game:GetService("RunService").Heartbeat:Connect(function()
-	local contentSize = UIListLayout.AbsoluteContentSize
-	ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, contentSize.Y + 50)
-end)
-
--- Scroll to bottom function
-local function ScrollToBottom()
-	ScrollingFrame.CanvasPosition = Vector2.new(0, ScrollingFrame.CanvasSize.Y.Offset)
 end
 
--- Add a scroll to bottom button
-local ScrollBottomBtn = CreateButton("ScrollBottomBtn", "Scroll To Bottom")
-ScrollBottomBtn.MouseButton1Click:Connect(ScrollToBottom)
+-- Fire all function
+local function fireAllParts()
+	local f3x = setupF3XFunctions()
+	if not f3x then return end
+	
+	for _, v in ipairs(workspace:GetDescendants()) do
+		if v:IsA("BasePart") then
+			spawn(function()
+				f3x.SetLocked(v, false)
+				f3x.AddFire(v)
+			end)
+		end
+	end
+end
+
+-- Unanchor all function
+local function unanchorAll()
+	local f3x = setupF3XFunctions()
+	if not f3x then return end
+	
+	for _, v in ipairs(workspace:GetDescendants()) do
+		if v:IsA("BasePart") then
+			spawn(function()
+				f3x.SetLocked(v, false)
+				f3x.SetAnchor(false, v)
+			end)
+		end
+	end
+end
+
+-- Color spam function
+local function colorSpamRandom()
+	local f3x = setupF3XFunctions()
+	if not f3x then return end
+	
+	for _, v in ipairs(workspace:GetDescendants()) do
+		if v:IsA("BasePart") then
+			spawn(function()
+				f3x.SetLocked(v, false)
+				f3x.Color(v, Color3.new(math.random(), math.random(), math.random()))
+			end)
+		end
+	end
+end
+
+-- Destroy all function
+local function destroyAll()
+	local f3x = setupF3XFunctions()
+	if not f3x then return end
+	
+	for _, v in ipairs(workspace:GetDescendants()) do
+		if v:IsA("BasePart") or v:IsA("UnionOperation") then
+			spawn(function()
+				f3x.DestroyPart(v)
+			end)
+		end
+	end
+end
+
+-- Baseplate function
+local function createBaseplate()
+	local f3x = setupF3XFunctions()
+	if not f3x then return end
+	
+	local player = game.Players.LocalPlayer
+	local char = player.Character
+	if not char then return end
+	
+	local hrp = char:FindFirstChild("HumanoidRootPart")
+	if not hrp then return end
+	
+	local hrpx = math.floor(hrp.CFrame.X)
+	local hrpz = math.floor(hrp.CFrame.Z)
+	local hrpy = math.floor(hrp.CFrame.Y)
+	
+	f3x.CreatePart(CFrame.new(hrpx, hrpy - 20, hrpz), workspace, "Spawn")
+	
+	for _, v in ipairs(workspace:GetChildren()) do
+		if v:IsA("BasePart") and math.floor(v.CFrame.Y) == hrpy - 20 and math.floor(v.CFrame.X) == hrpx then
+			spawn(function()
+				f3x.Resize(v, Vector3.new(700, 2, 700), CFrame.new(hrpx, hrpy - 20, hrpz))
+				f3x.Color(v, Color3.fromRGB(55, 55, 55))
+				f3x.SpawnTexture(v, Enum.NormalId.Top)
+				f3x.AddTexture(v, "0", Enum.NormalId.Top)
+				
+				while wait(1) do
+					pcall(function()
+						f3x.SetLocked(v, true)
+					end)
+				end
+			end)
+			break
+		end
+	end
+end
+
+-- Now create all buttons preserving ALL functions
+
+-- Tools Category
+createCategoryLabel("=== TOOLS ===", ScrollFrame)
+
+local btoolsBtn1 = createButton("Get B-Tools (1)", ScrollFrame)
+btoolsBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";btools me")
+end)
+
+local btoolsBtn2 = createButton("Get B-Tools (2)", ScrollFrame)
+btoolsBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";btools me")
+end)
+
+-- Player Management Category
+createCategoryLabel("=== PLAYER MANAGEMENT ===", ScrollFrame)
+
+local bringAllBtn1 = createButton("Bring All Players (1)", ScrollFrame)
+bringAllBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";bring all")
+end)
+
+local bringAllBtn2 = createButton("Bring All Players (2)", ScrollFrame)
+bringAllBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";bring all")
+end)
+
+local crashAllBtn1 = createButton("Crash All Players (1)", ScrollFrame)
+crashAllBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";crash others")
+end)
+
+local crashAllBtn2 = createButton("Crash All Players (2)", ScrollFrame)
+crashAllBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";crash others")
+end)
+
+local iceAllBtn = createButton("Ice All Players", ScrollFrame)
+iceAllBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";ice all")
+end)
+
+local freezeAllBtn1 = createButton("Freeze All Players (1)", ScrollFrame)
+freezeAllBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";freeze all")
+end)
+
+local freezeAllBtn2 = createButton("Freeze All Players (2)", ScrollFrame)
+freezeAllBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";freeze all")
+end)
+
+local jailAllBtn1 = createButton("Jail All Players (1)", ScrollFrame)
+jailAllBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";jail all")
+end)
+
+local jailAllBtn2 = createButton("Jail All Players (2)", ScrollFrame)
+jailAllBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";jail all")
+end)
+
+local invisibleAllBtn = createButton("Make All Invisible", ScrollFrame)
+invisibleAllBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";invisible all")
+end)
+
+local dogAllBtn1 = createButton("Dog All Players (1)", ScrollFrame)
+dogAllBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";dog all")
+end)
+
+local dogAllBtn2 = createButton("Dog All Players (2)", ScrollFrame)
+dogAllBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";dog all")
+end)
+
+local tankAllBtn = createButton("Tank All Players", ScrollFrame)
+tankAllBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";tank all")
+end)
+
+local carAllBtn = createButton("Car All Players", ScrollFrame)
+carAllBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";car all")
+end)
+
+local flingAllBtn = createButton("Fling All Players", ScrollFrame)
+flingAllBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";fling all")
+end)
+
+local unflyAllBtn = createButton("Unfly All Players", ScrollFrame)
+unflyAllBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";unfly all")
+end)
+
+local killAllBtn1 = createButton("Kill All Players (1)", ScrollFrame)
+killAllBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";kill all")
+end)
+
+local killAllBtn2 = createButton("Kill All Players (2)", ScrollFrame)
+killAllBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";kill all")
+end)
+
+local punishAllBtn1 = createButton("Punish All Players (1)", ScrollFrame)
+punishAllBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";punish all")
+end)
+
+local punishAllBtn2 = createButton("Punish All Players (2)", ScrollFrame)
+punishAllBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";punish all")
+end)
+
+local kickAllBtn = createButton("Kick All Players", ScrollFrame)
+kickAllBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";kick all")
+end)
+
+local muteAllBtn1 = createButton("Mute All Players (1)", ScrollFrame)
+muteAllBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";mute all")
+end)
+
+local muteAllBtn2 = createButton("Mute All Players (2)", ScrollFrame)
+muteAllBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";mute all")
+end)
+
+local blurAllBtn = createButton("Blur All Players", ScrollFrame)
+blurAllBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";blur all")
+end)
+
+local antiSkidBtn1 = createButton("Anti-Skid Protection (1)", ScrollFrame)
+antiSkidBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";hideguis others")
+	executeHDCommand(";uncmdbar2 others")
+	executeHDCommand(";mute others")
+end)
+
+local antiSkidBtn2 = createButton("Anti-Skid Protection (2)", ScrollFrame)
+antiSkidBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";mute others ;hideguis others ;uncmdbar2 others")
+end)
+
+-- Character Management Category
+createCategoryLabel("=== CHARACTER MANAGEMENT ===", ScrollFrame)
+
+local titleMeBtn1 = createButton("Title Me - t00kshaf1y (1)", ScrollFrame)
+titleMeBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";title me T00kshaf1y")
+end)
+
+local titleMeBtn2 = createButton("Title Me - t00kshaf1y (2)", ScrollFrame)
+titleMeBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";title me T00kshaf1y")
+end)
+
+local titleOthersBtn = createButton("Title Others - Team t00kshaf1y", ScrollFrame)
+titleOthersBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";title all Team t00kshaf1y join today")
+end)
+
+local becomeT00kshaf1yBtn = createButton("Become t00kshaf1y", ScrollFrame)
+becomeT00kshaf1yBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";char me ttsghdvhfc2")
+	executeHDCommand(";name me t00kshaf1y")
+end)
+
+local becomeTubers93Btn = createButton("Become Tubers93", ScrollFrame)
+becomeTubers93Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";char me Tubers93qm")
+	executeHDCommand(";name me Tubers93")
+end)
+
+local becomeC00lkiddBtn = createButton("Become c00lkidd", ScrollFrame)
+becomeC00lkiddBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";char me c00lkiddsb4k")
+	executeHDCommand(";name me c00lkidd")
+end)
+
+local nameAllBtn1 = createButton("Name All - t00kshaf1y (1)", ScrollFrame)
+nameAllBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";name all T00kshaf1y")
+end)
+
+local nameAllBtn2 = createButton("Name All - t00kshaf1y (2)", ScrollFrame)
+nameAllBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";name all T00kshaf1y")
+end)
+
+local teamNameAllBtn = createButton("Team Name All", ScrollFrame)
+teamNameAllBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";name all T00kshaf1y")
+end)
+
+-- Communication Category
+createCategoryLabel("=== COMMUNICATION ===", ScrollFrame)
+
+local sendMessageBtn1 = createButton("Send Team Message (1)", ScrollFrame)
+sendMessageBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";sm Team t00kshaf1y join today!!")
+end)
+
+local sendMessageBtn2 = createButton("Send Team Message (2)", ScrollFrame)
+sendMessageBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";sm Team t00kshaf1y join today!!")
+end)
+
+local forceChatBtn = createButton("Force Chat Messages", ScrollFrame)
+forceChatBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";chat others T00kshaf1y is here")
+	wait(0.2)
+	executeHDCommand(";chat others all hail t00kshaf1y")
+	wait(0.2)
+	executeHDCommand(";chat others t00kshaf1y is god")
+end)
+
+local hint1Btn1 = createButton("Hint 1 - Join Our Team (1)", ScrollFrame)
+hint1Btn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";sh Join our team now!")
+end)
+
+local hint1Btn2 = createButton("Hint 1 - Join Our Team (2)", ScrollFrame)
+hint1Btn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";sh Join our team now!")
+end)
+
+local hint2Btn1 = createButton("Hint 2 - Hacked By Us (1)", ScrollFrame)
+hint2Btn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";sh Hacked by us")
+end)
+
+local hint2Btn2 = createButton("Hint 2 - Hacked By Us (2)", ScrollFrame)
+hint2Btn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";sh Hacked by us")
+end)
+
+local hint3Btn = createButton("Hint - I Will Destroy", ScrollFrame)
+hint3Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";h I will destroy this place")
+end)
+
+local hint4Btn = createButton("Hint - T00kshaf1y Is Here", ScrollFrame)
+hint4Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";h T00kshaf1y is here")
+end)
+
+local message1Btn1 = createButton("Message 1 - Already Hacked (1)", ScrollFrame)
+message1Btn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";sm T00kshaf1y has already haxed this server")
+end)
+
+local message1Btn2 = createButton("Message 1 - Already Hacked (2)", ScrollFrame)
+message1Btn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";sm T00kshaf1y has already haxed this server")
+end)
+
+local message2Btn1 = createButton("Message 2 - Join Team (1)", ScrollFrame)
+message2Btn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";sm Team T00kshaf1y join now!!!")
+end)
+
+local message2Btn2 = createButton("Message 2 - Join Team (2)", ScrollFrame)
+message2Btn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";sm Team T00kshaf1y join now!!!")
+end)
+
+local alertBtn1 = createButton("Alert All - Hacked Message (1)", ScrollFrame)
+alertBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";alert all HACKED BY T00KSHAF1Y")
+	executeHDCommand(";n all Team t00kshaf1y join today!!")
+end)
+
+local alertBtn2 = createButton("Alert All - Hacked Message (2)", ScrollFrame)
+alertBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";alert all HACKED BY T00KSHAF1Y")
+	executeHDCommand(";n all Team t00kshaf1y join today!!")
+end)
+
+local alert3Btn = createButton("Alert All - Welcome", ScrollFrame)
+alert3Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";alert all Welcome to our team's realm!!")
+end)
+
+local teamSpamBtn = createButton("Team Spam", ScrollFrame)
+teamSpamBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";createteam red hacked by t00kshaf1y")
+	executeHDCommand(";createteam cyan team protokidd on top")
+	executeHDCommand(";createteam db Team t00kshaf1y")
+	executeHDCommand(";createteam green t00kshaf1y on top")
+	executeHDCommand(";createteam dg team t00kshaf1y on top")
+	executeHDCommand(";createteam pk t00kshaf1y on top")
+	executeHDCommand(";createteam p t00kshaf1y on top")
+	executeHDCommand(";createteam y t00kshaf1y on top")
+	executeHDCommand(";createteam o t00kshaf1y on top")
+	executeHDCommand(";createteam black t00kshaf1y on top")
+	executeHDCommand(";createteam white t00kshaf1y on top")
+end)
+
+-- Environment Category
+createCategoryLabel("=== ENVIRONMENT ===", ScrollFrame)
+
+local nightBtn1 = createButton("Set to Night (1)", ScrollFrame)
+nightBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";time 23")
+end)
+
+local nightBtn2 = createButton("Set to Night (2)", ScrollFrame)
+nightBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";time 23")
+end)
+
+local dayBtn1 = createButton("Set to Day (1)", ScrollFrame)
+dayBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";time 14")
+end)
+
+local dayBtn2 = createButton("Set to Day (2)", ScrollFrame)
+dayBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";time 14")
+end)
+
+local fogBtn1 = createButton("Toggle Fog (1)", ScrollFrame)
+fogBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";fog")
+end)
+
+local fogBtn2 = createButton("Toggle Fog (2)", ScrollFrame)
+fogBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";fog")
+end)
+
+local discoBtn1 = createButton("Disco Lighting (1)", ScrollFrame)
+discoBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";disco")
+end)
+
+local discoBtn2 = createButton("Disco Lighting (2)", ScrollFrame)
+discoBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";disco")
+end)
+
+local fogColorBtn = createButton("Fog Color - Cyan", ScrollFrame)
+fogColorBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";fogcolor cyan")
+end)
+
+local fogColorBlackBtn = createButton("Fog Color - Black", ScrollFrame)
+fogColorBlackBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";fogcolor black")
+end)
+
+local saveMapBtn1 = createButton("Save Map (1)", ScrollFrame)
+saveMapBtn1.MouseButton1Click:Connect(function()
+	executeHDCommand(";savemap")
+end)
+
+local saveMapBtn2 = createButton("Save Map (2)", ScrollFrame)
+saveMapBtn2.MouseButton1Click:Connect(function()
+	executeHDCommand(";savemap")
+end)
+
+-- Teleportation Category
+createCategoryLabel("=== TELEPORTATION ===", ScrollFrame)
+
+local tpAllMeepCityBtn = createButton("TP All to Meep City", ScrollFrame)
+tpAllMeepCityBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";forceplace all 109147333821356")
+end)
+
+local tpOthersMeepCityBtn = createButton("TP Others to Meep City", ScrollFrame)
+tpOthersMeepCityBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";forceplace other 109147333821356")
+end)
+
+-- Music Category
+createCategoryLabel("=== MUSIC ===", ScrollFrame)
+
+local music1Btn = createButton("Music 1 - Unknown", ScrollFrame)
+music1Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";music 109312105079673 ;volume inf")
+end)
+
+local music2Btn = createButton("Music 2 - Ba Fang Lai Cai", ScrollFrame)
+music2Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";music 113158802785741 ;pitch 0.1 ;volume inf")
+end)
+
+local music3Btn = createButton("Music 3 - Team's Theme", ScrollFrame)
+music3Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";music 1847661821")
+	executeHDCommand(";pitch 0.9")
+	executeHDCommand(";volume inf")
+end)
+
+local music4Btn = createButton("Music 4 - c00lkidd", ScrollFrame)
+music4Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";music 122552583844805")
+	executeHDCommand(";pitch 0.10")
+	executeHDCommand(";volume inf")
+end)
+
+local music5Btn = createButton("Music 5 - Jumpstyle", ScrollFrame)
+music5Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";music 1839246711")
+	executeHDCommand(";pitch 1.1")
+	executeHDCommand(";volume inf")
+end)
+
+local music6Btn = createButton("Music 6 - Funk", ScrollFrame)
+music6Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";music 16190783774")
+	executeHDCommand(";pitch 1.2")
+	executeHDCommand(";volume inf")
+end)
+
+local music7Btn = createButton("Music 7 - Wind of the Flords", ScrollFrame)
+music7Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";music 93932484780481")
+	executeHDCommand(";pitch 0.09")
+	executeHDCommand(";volume inf")
+end)
+
+local music8Btn = createButton("Music 8 - Whistle", ScrollFrame)
+music8Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";music 3152833592")
+	executeHDCommand(";volume inf")
+end)
+
+local music9Btn = createButton("Music 9 - Unknown 2", ScrollFrame)
+music9Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";music 3892375615")
+	executeHDCommand(";pitch 1.0")
+	executeHDCommand(";volume inf")
+end)
+
+local music10Btn = createButton("Music 10 - Unknown 3", ScrollFrame)
+music10Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";music 3892375615")
+	executeHDCommand(";pitch 1.0")
+	executeHDCommand(";volume inf")
+end)
+
+-- ADD THE SPRATA REMIX MUSIC
+local sprataRemixBtn = createButton("Music - Sprata Remix", ScrollFrame)
+sprataRemixBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";music 73293994328169")
+	executeHDCommand(";volume inf")
+end)
+
+-- Skyboxes Category
+createCategoryLabel("=== SKYBOXES ===", ScrollFrame)
+
+local skybox1Btn = createButton("Skybox 1 - Cyan", ScrollFrame)
+skybox1Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";fogcolor cyan")
+	wait(0.25)
+	createSkybox("118953088842031")
+end)
+
+local skybox2Btn = createButton("Skybox 2 - Blue", ScrollFrame)
+skybox2Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";fogcolor cyan")
+	wait(0.25)
+	createSkybox("118780143375538")
+end)
+
+local skybox3Btn = createButton("Skybox 3 - Islam", ScrollFrame)
+skybox3Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";fogcolor cyan")
+	wait(0.25)
+	createSkybox("123452321164348")
+end)
+
+local skybox4Btn = createButton("Skybox 4 - Proto", ScrollFrame)
+skybox4Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";fogcolor black ;time 0")
+	wait(0.1)
+	createSkybox("84491519970706")
+end)
+
+local skybox5Btn = createButton("Skybox 5 - Ptkid", ScrollFrame)
+skybox5Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";fogcolor black ;time 14")
+	wait(0.1)
+	createSkybox("96622965544848")
+end)
+
+local skybox6Btn = createButton("Skybox 6 - Cyan Again", ScrollFrame)
+skybox6Btn.MouseButton1Click:Connect(function()
+	executeHDCommand(";fogcolor cyan")
+	wait(0.25)
+	createSkybox("118953088842031")
+end)
+
+-- Decal Spam Category
+createCategoryLabel("=== DECAL SPAM ===", ScrollFrame)
+
+local decalSpam1Btn = createButton("Decal Spam 1 - Cyan", ScrollFrame)
+decalSpam1Btn.MouseButton1Click:Connect(function()
+	createDecalSpam("118953088842031")
+end)
+
+local decalSpam2Btn = createButton("Decal Spam 2 - Blue", ScrollFrame)
+decalSpam2Btn.MouseButton1Click:Connect(function()
+	createDecalSpam("118780143375538")
+end)
+
+local decalSpam3Btn = createButton("Decal Spam 3 - Islam", ScrollFrame)
+decalSpam3Btn.MouseButton1Click:Connect(function()
+	createDecalSpam("123452321164348")
+end)
+
+local decalSpam4Btn = createButton("Decal Spam 4 - Cyan Again", ScrollFrame)
+decalSpam4Btn.MouseButton1Click:Connect(function()
+	createDecalSpam("118953088842031")
+end)
+
+local decalSpam5Btn = createButton("Decal Spam 5 - Proto", ScrollFrame)
+decalSpam5Btn.MouseButton1Click:Connect(function()
+	createDecalSpam("84491519970706")
+end)
+
+local decalSpam6Btn = createButton("Decal Spam 6 - Ptkid", ScrollFrame)
+decalSpam6Btn.MouseButton1Click:Connect(function()
+	createDecalSpam("96622965544848")
+end)
+
+local islamDecalSpamBtn = createButton("Islam Decal Spam", ScrollFrame)
+islamDecalSpamBtn.MouseButton1Click:Connect(function()
+	createDecalSpam("123452321164348")
+end)
+
+local protoDecalSpamBtn = createButton("Proto Decal Spam", ScrollFrame)
+protoDecalSpamBtn.MouseButton1Click:Connect(function()
+	createDecalSpam("84491519970706")
+end)
+
+local ptkidDecalSpamBtn = createButton("Ptkid Decal Spam", ScrollFrame)
+ptkidDecalSpamBtn.MouseButton1Click:Connect(function()
+	createDecalSpam("96622965544848")
+end)
+
+-- Texture Spam Category
+createCategoryLabel("=== TEXTURE SPAM ===", ScrollFrame)
+
+local textureSpam1Btn = createButton("Texture Spam 1 - Proto", ScrollFrame)
+textureSpam1Btn.MouseButton1Click:Connect(function()
+	createTextureSpam("84491519970706")
+end)
+
+local textureSpam2Btn = createButton("Texture Spam 2 - Ptkid", ScrollFrame)
+textureSpam2Btn.MouseButton1Click:Connect(function()
+	createTextureSpam("96622965544848")
+end)
+
+local protoTextureSpamBtn = createButton("Proto Texture Spam", ScrollFrame)
+protoTextureSpamBtn.MouseButton1Click:Connect(function()
+	createTextureSpam("84491519970706")
+end)
+
+local ptkidTextureSpamBtn = createButton("Ptkid Texture Spam", ScrollFrame)
+ptkidTextureSpamBtn.MouseButton1Click:Connect(function()
+	createTextureSpam("96622965544848")
+end)
+
+-- Building Tools Category
+createCategoryLabel("=== BUILDING TOOLS ===", ScrollFrame)
+
+local unanchorAllBtn1 = createButton("Unanchor All (1)", ScrollFrame)
+unanchorAllBtn1.MouseButton1Click:Connect(function()
+	unanchorAll()
+end)
+
+local unanchorAllBtn2 = createButton("Unanchor All (2)", ScrollFrame)
+unanchorAllBtn2.MouseButton1Click:Connect(function()
+	unanchorAll()
+end)
+
+local unanchorAllBtn3 = createButton("Unanchor All (3)", ScrollFrame)
+unanchorAllBtn3.MouseButton1Click:Connect(function()
+	unanchorAll()
+end)
+
+local deleteBaseplateBtn = createButton("Delete Baseplate", ScrollFrame)
+deleteBaseplateBtn.MouseButton1Click:Connect(function()
+	local f3x = setupF3XFunctions()
+	if f3x then
+		for _, v in ipairs(workspace:GetDescendants()) do
+			if v:IsA("BasePart") and v.Name == "Baseplate" then
+				f3x.DestroyPart(v)
+			end
+		end
+	end
+end)
+
+local colorSpamBtn1 = createButton("Random Color Spam (1)", ScrollFrame)
+colorSpamBtn1.MouseButton1Click:Connect(function()
+	colorSpamRandom()
+end)
+
+local colorSpamBtn2 = createButton("Random Color Spam (2)", ScrollFrame)
+colorSpamBtn2.MouseButton1Click:Connect(function()
+	colorSpamRandom()
+end)
+
+local destroyAllBtn1 = createButton("Destroy All (1)", ScrollFrame)
+destroyAllBtn1.MouseButton1Click:Connect(function()
+	destroyAll()
+end)
+
+local destroyAllBtn2 = createButton("Destroy All (2)", ScrollFrame)
+destroyAllBtn2.MouseButton1Click:Connect(function()
+	destroyAll()
+end)
+
+local fireAllBtn1 = createButton("Fire All Parts (1)", ScrollFrame)
+fireAllBtn1.MouseButton1Click:Connect(function()
+	fireAllParts()
+end)
+
+local fireAllBtn2 = createButton("Fire All Parts (2)", ScrollFrame)
+fireAllBtn2.MouseButton1Click:Connect(function()
+	fireAllParts()
+end)
+
+local baseplateBtn1 = createButton("Create Baseplate (1)", ScrollFrame)
+baseplateBtn1.MouseButton1Click:Connect(function()
+	createBaseplate()
+end)
+
+local baseplateBtn2 = createButton("Create Baseplate (2)", ScrollFrame)
+baseplateBtn2.MouseButton1Click:Connect(function()
+	createBaseplate()
+end)
+
+-- Special Functions Category
+createCategoryLabel("=== SPECIAL FUNCTIONS ===", ScrollFrame)
+
+local realmBtn = createButton("Create Realm", ScrollFrame)
+realmBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";btools me")
+	executeHDCommand(";sm Team t00kshaf1y join now!!")
+	wait(0.6)
+	executeHDCommand(";fogcolor black")
+	wait(0.5)
+	executeHDCommand(";punish all")
+	executeHDCommand(";m Hacked by us")
+	wait(0.1)
+	executeHDCommand(";sh You are about to go to our realm!!")
+	
+	-- Destroy all existing parts
+	local f3x = setupF3XFunctions()
+	if f3x then
+		for _, v in ipairs(workspace:GetDescendants()) do
+			if v:IsA("BasePart") or v:IsA("UnionOperation") then
+				spawn(function()
+					f3x.DestroyPart(v)
+				end)
+			end
+		end
+	end
+	
+	wait(1)
+	
+	-- Create new realm base
+	executeHDCommand(";fogcolor black ;time")
+	createBaseplate()
+	
+	-- Additional realm setup
+	executeHDCommand(";res all")
+	wait(0.3)
+	executeHDCommand(";r6 all")
+	executeHDCommand(";blur all")
+	wait(2.8)
+	executeHDCommand(";fog")
+	executeHDCommand(";sh This is the realm of team T00kshaf1y!")
+	executeHDCommand(";disco")
+	executeHDCommand(";n Team t00kshaf1y join now!!")
+	wait(2.0)
+	executeHDCommand(";alert all Welcome to our team's realm!!")
+	executeHDCommand(";fire all")
+	executeHDCommand(";dog all")
+	wait(1.6)
+	executeHDCommand(";title me t00kshaf1y")
+	executeHDCommand(";name all t00kshaf1y")
+	wait(2.0)
+	executeHDCommand(";time 23")
+	executeHDCommand(";music 1847661821 ;volume inf  ;savemap ;pitch 1.1")
+	wait(5.0)
+	executeHDCommand(";char all ttsghdvhfc2")
+	executeHDCommand(";freeze all")
+	executeHDCommand(";sh hacked by team t00kshaf1y")
+	executeHDCommand(";sm This game was destroyed by us!")    
+	wait(3.0)
+	executeHDCommand(";jail all")
+	executeHDCommand(";sh lol")
+	executeHDCommand(";loopkill all")
+end)
+
+local destroyMapBtn = createButton("Destroy The Map", ScrollFrame)
+destroyMapBtn.MouseButton1Click:Connect(function()
+	executeHDCommand(";fog")
+	executeHDCommand(";disco")
+	executeHDCommand(";punish all")
+	executeHDCommand(";name all T00kshaf1y")
+	wait(2.8)
+	executeHDCommand(";music 1839246711")
+	executeHDCommand(";pitch 1.3")
+	executeHDCommand(";volume inf")
+	executeHDCommand(";time 14")
+end)
+
+-- Final adjustment to canvas size based on content
+wait(0.1)
+local contentSize = UIListLayout.AbsoluteContentSize
+ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, contentSize.Y + 10)
+
+print("t00kshaf1y's Ultimate GUI loaded successfully!")
+print("All functions preserved - No duplicates removed")
