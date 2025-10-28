@@ -1,0 +1,216 @@
+-- T00kshaf1y's F3X GUI v2 (Mobile-Compatible Draggable Border)
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui", 60)
+local UserInputService = game:GetService("UserInputService")
+
+-- Main GUI Container
+local MainGui = Instance.new("ScreenGui")
+MainGui.Name = "T00kshaf1y_F3X_GUI"
+MainGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+MainGui.Parent = PlayerGui
+
+-- Main Frame (Draggable Border)
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainContainer"
+MainFrame.Size = UDim2.new(0.85, 0, 0.8, 0)
+MainFrame.Position = UDim2.new(0.075, 0, 0.1, 0)
+MainFrame.BackgroundColor3 = Color3.new(0.1, 0.3, 0.8)
+MainFrame.BorderSizePixel = 5 -- Draggable border thickness
+MainFrame.BorderColor3 = Color3.new(0.05, 0.2, 0.6)
+MainFrame.ClipsDescendants = true
+MainFrame.Parent = MainGui
+
+-- Cyan Background + Background Image
+local BackgroundLayer = Instance.new("Frame")
+BackgroundLayer.Name = "BackgroundLayer"
+BackgroundLayer.Size = UDim2.new(1, -10, 1, -10)
+BackgroundLayer.Position = UDim2.new(0, 5, 0, 5)
+BackgroundLayer.BackgroundColor3 = Color3.new(0.15, 0.8, 0.8) -- Cyan background
+BackgroundLayer.Parent = MainFrame
+
+local BgImage = Instance.new("ImageLabel")
+BgImage.Name = "BgImage"
+BgImage.Size = UDim2.new(1, 0, 1, 0)
+BgImage.Image = "rbxassetid://111744606274727"
+BgImage.ImageTransparency = 0.6
+BgImage.BackgroundTransparency = 1
+BgImage.ScaleType = Enum.ScaleType.Cover
+BgImage.Parent = BackgroundLayer
+
+-- Titles
+local MainTitle = Instance.new("TextLabel")
+MainTitle.Name = "MainTitle"
+MainTitle.Size = UDim2.new(1, 0, 0.12, 0)
+MainTitle.Position = UDim2.new(0, 0, 0, 0)
+MainTitle.BackgroundTransparency = 1
+MainTitle.Text = "T00kshaf1y's gui for f3x(v2)"
+MainTitle.TextColor3 = Color3.new(1, 1, 1)
+MainTitle.TextScaled = true
+MainTitle.Font = Enum.Font.SourceSansBold
+MainTitle.Parent = BackgroundLayer
+
+local SubTitle = Instance.new("TextLabel")
+SubTitle.Name = "SubTitle"
+SubTitle.Size = UDim2.new(1, 0, 0.06, 0)
+SubTitle.Position = UDim2.new(0, 0, 0.12, 0)
+SubTitle.BackgroundTransparency = 1
+SubTitle.Text = "By Team T00kshaf1y"
+SubTitle.TextColor3 = Color3.new(0.9, 0.9, 0.9)
+SubTitle.TextScaled = true
+SubTitle.Font = Enum.Font.SourceSans
+SubTitle.Parent = BackgroundLayer
+
+-- Page Switch Buttons
+local Page1Btn = Instance.new("TextButton")
+Page1Btn.Name = "Page1Btn"
+Page1Btn.Size = UDim2.new(0.18, 0, 0.07, 0)
+Page1Btn.Position = UDim2.new(0.32, 0, 0.2, 0)
+Page1Btn.BackgroundColor3 = Color3.new(0.1, 0.3, 0.8)
+Page1Btn.Text = "Page 1"
+Page1Btn.TextColor3 = Color3.new(1, 1, 1)
+Page1Btn.TextScaled = true
+Page1Btn.Parent = BackgroundLayer
+
+local Page2Btn = Instance.new("TextButton")
+Page2Btn.Name = "Page2Btn"
+Page2Btn.Size = UDim2.new(0.18, 0, 0.07, 0)
+Page2Btn.Position = UDim2.new(0.5, 0, 0.2, 0)
+Page2Btn.BackgroundColor3 = Color3.new(0.4, 0.4, 0.4)
+Page2Btn.Text = "Page 2"
+Page2Btn.TextColor3 = Color3.new(1, 1, 1)
+Page2Btn.TextScaled = true
+Page2Btn.Parent = BackgroundLayer
+
+-- Page 1 (220 Buttons)
+local Page1 = Instance.new("ScrollingFrame")
+Page1.Name = "Page1"
+Page1.Size = UDim2.new(1, -20, 1, -180)
+Page1.Position = UDim2.new(0, 10, 0, 170)
+Page1.BackgroundColor3 = Color3.new(0.1, 0.7, 0.7)
+Page1.BorderSizePixel = 2
+Page1.BorderColor3 = Color3.new(0.05, 0.5, 0.5)
+Page1.ScrollBarThickness = 10
+Page1.CanvasSize = UDim2.new(0, 0, 0, 1200)
+Page1.Parent = BackgroundLayer
+
+local Page1Layout = Instance.new("UIGridLayout")
+Page1Layout.Name = "Page1Layout"
+Page1Layout.Parent = Page1
+Page1Layout.CellSize = UDim2.new(0, 140, 0, 45)
+Page1Layout.CellPadding = UDim2.new(0, 12, 0, 8)
+Page1Layout.SortOrder = Enum.SortOrder.LayoutOrder
+Page1Layout.Padding = UDim.new(0, 10)
+
+-- Generate 220 Buttons for Page 1 (full syntax: local newButton = Instance.new("TextButton"))
+for i = 1, 220 do
+    local newButton = Instance.new("TextButton")
+    newButton.Name = "Page1_Button_" .. i
+    newButton.Size = UDim2.new(1, 0, 1, 0)
+    newButton.BackgroundColor3 = Color3.new(0.2, 0.4, 0.9)
+    newButton.Text = "P1 Button " .. i
+    newButton.TextColor3 = Color3.new(1, 1, 1)
+    newButton.TextScaled = true
+    newButton.LayoutOrder = i
+    newButton.Parent = Page1
+end
+
+-- Page 2 (130 Buttons)
+local Page2 = Instance.new("ScrollingFrame")
+Page2.Name = "Page2"
+Page2.Size = UDim2.new(1, -20, 1, -180)
+Page2.Position = UDim2.new(0, 10, 0, 170)
+Page2.BackgroundColor3 = Color3.new(0.1, 0.7, 0.7)
+Page2.BorderSizePixel = 2
+Page2.BorderColor3 = Color3.new(0.05, 0.5, 0.5)
+Page2.ScrollBarThickness = 10
+Page2.CanvasSize = UDim2.new(0, 0, 0, 700)
+Page2.Visible = false
+Page2.Parent = BackgroundLayer
+
+local Page2Layout = Instance.new("UIGridLayout")
+Page2Layout.Name = "Page2Layout"
+Page2Layout.Parent = Page2
+Page2Layout.CellSize = UDim2.new(0, 140, 0, 45)
+Page2Layout.CellPadding = UDim2.new(0, 12, 0, 8)
+Page2Layout.SortOrder = Enum.SortOrder.LayoutOrder
+Page2Layout.Padding = UDim.new(0, 10)
+
+-- Generate 130 Buttons for Page 2 (full syntax: local newButton = Instance.new("TextButton"))
+for i = 1, 130 do
+    local newButton = Instance.new("TextButton")
+    newButton.Name = "Page2_Button_" .. i
+    newButton.Size = UDim2.new(1, 0, 1, 0)
+    newButton.BackgroundColor3 = Color3.new(0.15, 0.5, 0.9)
+    newButton.Text = "P2 Button " .. i
+    newButton.TextColor3 = Color3.new(1, 1, 1)
+    newButton.TextScaled = true
+    newButton.LayoutOrder = i
+    newButton.Parent = Page2
+end
+
+-- Page Switch Logic
+Page1Btn.MouseButton1Click:Connect(function()
+    Page1.Visible = true
+    Page2.Visible = false
+    Page1Btn.BackgroundColor3 = Color3.new(0.1, 0.3, 0.8)
+    Page2Btn.BackgroundColor3 = Color3.new(0.4, 0.4, 0.4)
+end)
+
+Page2Btn.MouseButton1Click:Connect(function()
+    Page1.Visible = false
+    Page2.Visible = true
+    Page1Btn.BackgroundColor3 = Color3.new(0.4, 0.4, 0.4)
+    Page2Btn.BackgroundColor3 = Color3.new(0.1, 0.3, 0.8)
+end)
+
+-- Mobile-Only Draggable Border Logic
+local isDragging = false
+local dragStartPos = Vector2.new()
+local frameStartPos = UDim2.new()
+local borderThickness = MainFrame.BorderSizePixel
+
+MainFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch then
+        local touchPos = input.Position
+        local frameAbsPos = MainFrame.AbsolutePosition
+        local frameAbsSize = MainFrame.AbsoluteSize
+        
+        local isOnBorder = (
+            touchPos.X - frameAbsPos.X <= borderThickness or
+            frameAbsPos.X + frameAbsSize.X - touchPos.X <= borderThickness or
+            touchPos.Y - frameAbsPos.Y <= borderThickness or
+            frameAbsPos.Y + frameAbsSize.Y - touchPos.Y <= borderThickness
+        )
+        
+        if isOnBorder then
+            isDragging = true
+            dragStartPos = touchPos
+            frameStartPos = MainFrame.Position
+        end
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if isDragging and input.UserInputType == Enum.UserInputType.Touch then
+        local offset = input.Position - dragStartPos
+        MainFrame.Position = UDim2.new(
+            frameStartPos.X.Scale, frameStartPos.X.Offset + offset.X,
+            frameStartPos.Y.Scale, frameStartPos.Y.Offset + offset.Y
+        )
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch then
+        isDragging = false
+    end
+end)
+
+UserInputService.InputCancelled:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch then
+        isDragging = false
+    end
+end)
+
+print("[T00kshaf1y GUI] Loaded Successfully - Mobile Draggable Border Enabled")
