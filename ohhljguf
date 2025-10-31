@@ -1,0 +1,186 @@
+--[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local Lighting = game:GetService("Lighting")
+local Workspace = game.Workspace
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "Mangotrollfaceedit gui"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = PlayerGui
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 310, 0, 310)
+Frame.Position = UDim2.new(1, -155, 0.3, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Frame.BorderSizePixel = 2
+Frame.BorderColor3 = Color3.fromRGB(255, 255, 255)
+Frame.Active = true
+Frame.Draggable = true
+Frame.Parent = ScreenGui
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Text = "MANGOTROLLFACEEDIT F3X GUI"
+Title.Font = Enum.Font.Code
+Title.TextSize = 16
+Title.Parent = Frame
+
+local ScrollingFrame = Instance.new("ScrollingFrame")
+ScrollingFrame.Size = UDim2.new(1, 0, 1, -50)
+ScrollingFrame.Position = UDim2.new(0, 0, 0, 50)
+ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 1100)
+ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255)
+ScrollingFrame.BackgroundTransparency = 1
+ScrollingFrame.Parent = Frame
+
+function CreateButton(text, position, callback)
+    local Button = Instance.new("TextButton")
+    Button.Size = UDim2.new(0.9, 0, 0, 40)
+    Button.Position = UDim2.new(0.05, 0, position, 0)
+    Button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Button.Text = text
+    Button.Font = Enum.Font.Code
+    Button.TextSize = 16
+    Button.Parent = ScrollingFrame
+    Button.MouseButton1Click:Connect(callback)
+end
+
+CreateButton("Get F3X", 0.01,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/FjmUyeH3"))()
+end)
+CreateButton("Theme", 0.04,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/53FsHqvs"))()
+end)
+CreateButton("Disco", 0.07,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/PjPAH3Bn"))()
+end)
+CreateButton("Save map", 0.10,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/6JNg293t"))()
+end)
+CreateButton("Load map", 0.13,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/GJGGTbST"))()
+end)
+CreateButton("Server hint", 0.16,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/xeFhCVyX"))()
+end)
+CreateButton("Server message", 0.19,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/w5XZf9an"))()
+end)
+CreateButton("Title", 0.22,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/4dH6Br92"))()
+end)
+CreateButton("Char all", 0.25,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/M16fuASt"))()
+end)
+CreateButton("Explode all", 0.28,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/Hm4N5Efd"))()
+end)
+CreateButton("Re character", 0.31,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/eujJHZHg"))()
+end)
+CreateButton("Realm", 0.34,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/aCD57ggL"))()
+end)
+CreateButton("Super trash gui not mine", 0.37,
+function()
+	loadstring(game:HttpGet("https://rawscripts.net/raw/F3X-SandBox-(-F3X-Building-Tools-World-)-LEAK-Btools-SS-replication-Super-trash-gui-work-on-btools-35840"))()
+end)
+CreateButton("Matify", 0.40,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/fLhwWvc6"))()
+end)
+CreateButton("Fire all & fire parts", 0.43,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/MBF1xR9P"))()
+end)
+CreateButton("German music", 0.97,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/54XkwkFr"))()
+end)
+CreateButton("Big head all", 0.46,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/uySTmniR"))()
+end)
+CreateButton("Title others", 0.49,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/6EahUJaZ"))()
+end)
+CreateButton("Spin all", 0.52,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/7RVCmBD0"))()
+end)
+CreateButton("Smoke all", 0.55,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/qRsg2hii"))()
+end)
+CreateButton("A JOB", 0.58,
+function()
+	loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-F3X-Job-application-49222"))()
+end)
+CreateButton("c00lify", 0.61,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/srFEQUrN"))()
+end)
+CreateButton("Mario EXE", 0.64,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/dDuAFwLx"))()
+end)
+CreateButton("666", 0.67,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/Zv3QMGj2"))()
+end)
+CreateButton("Decal spam", 0.70,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/7TBJaFWw"))()
+end)
+CreateButton("Decal spam 2", 0.73,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/f0YjUfuf"))()
+end)
+CreateButton("Decal remover", 0.88,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/R0hwX9SR"))()
+end)
+CreateButton("Skybox", 0.79,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/LaywhkKa"))()
+end)
+CreateButton("Skybox 2", 0.82,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/pseNa9vR"))()
+end)
+CreateButton("Skybox 3", 0.85,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/CkwReGZQ"))()
+end)
+CreateButton("Decal spam 3", 0.76,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/R2AMEZmb"))()
+end)
+CreateButton("Rampage ahh song", 0.91,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/ADQsZrni"))()
+end)
+CreateButton("Boogie down dance FE", 0.94,
+function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/wcjshfxs"))()
+end)
